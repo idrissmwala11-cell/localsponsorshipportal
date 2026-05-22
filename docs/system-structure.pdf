@@ -1,0 +1,1117 @@
+%PDF-1.4
+1 0 obj
+<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>
+endobj
+2 0 obj
+<< /Type /Pages /Kids [4 0 R 6 0 R 8 0 R 10 0 R 12 0 R 14 0 R 16 0 R] /Count 7 >>
+endobj
+3 0 obj
+<< /Length 2274 >>
+stream
+BT
+/F1 11 Tf
+50 782 Td
+/F1 16 Tf
+(COMPASSION PORTAL SYSTEM STRUCTURE) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Analysis date: 2026-04-14) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(1. System overview) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Compassion Portal is a Laravel 13 web application used to manage participants,) Tj
+0 -15 Td
+/F1 11 Tf
+(sponsorship records, users, centers, and center-based notifications. The system) Tj
+0 -15 Td
+/F1 11 Tf
+(follows a multi-center access model where users only see data for the centers they are) Tj
+0 -15 Td
+/F1 11 Tf
+(allowed to access. It uses Blade templates for the UI, SQLite in the current local) Tj
+0 -15 Td
+/F1 11 Tf
+(environment, and Vite plus Tailwind CSS for frontend assets.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(2. Core technology stack) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- Backend framework: Laravel 13) Tj
+0 -15 Td
+/F1 11 Tf
+(- Backend language: PHP 8.3+) Tj
+0 -15 Td
+/F1 11 Tf
+(- Frontend rendering: Blade templates) Tj
+0 -15 Td
+/F1 11 Tf
+(- Frontend tooling: Vite) Tj
+0 -15 Td
+/F1 11 Tf
+(- Styling: Tailwind CSS) Tj
+0 -15 Td
+/F1 11 Tf
+(- JavaScript helpers: Alpine.js, Axios) Tj
+0 -15 Td
+/F1 11 Tf
+(- Authentication foundation: Laravel Breeze) Tj
+0 -15 Td
+/F1 11 Tf
+(- Local database: `database/database.sqlite`) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(3. Important folder structure) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(compassion-portal/) Tj
+0 -15 Td
+/F1 11 Tf
+(|-- app/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- Http/) Tj
+0 -15 Td
+/F1 11 Tf
+(| | |-- Controllers/) Tj
+0 -15 Td
+/F1 11 Tf
+(| | | |-- Admin/) Tj
+0 -15 Td
+/F1 11 Tf
+(| | | `-- Auth/) Tj
+0 -15 Td
+/F1 11 Tf
+(| | |-- Middleware/) Tj
+0 -15 Td
+/F1 11 Tf
+(| | `-- Requests/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- Models/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- Providers/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- Services/) Tj
+0 -15 Td
+/F1 11 Tf
+(| `-- View/Components/) Tj
+0 -15 Td
+/F1 11 Tf
+(|-- bootstrap/) Tj
+0 -15 Td
+/F1 11 Tf
+(|-- config/) Tj
+0 -15 Td
+/F1 11 Tf
+(|-- database/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- migrations/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- factories/) Tj
+0 -15 Td
+/F1 11 Tf
+(| `-- seeders/) Tj
+ET
+endstream
+endobj
+4 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R >> >> /Contents 3 0 R >>
+endobj
+5 0 obj
+<< /Length 2200 >>
+stream
+BT
+/F1 11 Tf
+50 782 Td
+/F1 11 Tf
+(|-- public/) Tj
+0 -15 Td
+/F1 11 Tf
+(|-- resources/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- css/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- js/) Tj
+0 -15 Td
+/F1 11 Tf
+(| `-- views/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- admin/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- auth/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- components/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- dashboard/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- layouts/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- notifications/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- participants/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- profile/) Tj
+0 -15 Td
+/F1 11 Tf
+(| `-- sponsorships/) Tj
+0 -15 Td
+/F1 11 Tf
+(|-- routes/) Tj
+0 -15 Td
+/F1 11 Tf
+(| |-- web.php) Tj
+0 -15 Td
+/F1 11 Tf
+(| `-- auth.php) Tj
+0 -15 Td
+/F1 11 Tf
+(|-- scripts/) Tj
+0 -15 Td
+/F1 11 Tf
+(|-- storage/) Tj
+0 -15 Td
+/F1 11 Tf
+(`-- tests/) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(4. Main business modules) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(4.1 Authentication and security) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- Login, registration, forgot password, and reset password are defined in) Tj
+0 -15 Td
+/F1 11 Tf
+(  `routes/auth.php`.) Tj
+0 -15 Td
+/F1 11 Tf
+(- After login, the system enforces a second step of OTP verification through) Tj
+0 -15 Td
+/F1 11 Tf
+(  email.) Tj
+0 -15 Td
+/F1 11 Tf
+(- The `otp` middleware blocks access to the dashboard and protected modules until) Tj
+0 -15 Td
+/F1 11 Tf
+(  OTP is verified.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Role-based middleware in the project includes:) Tj
+0 -15 Td
+/F1 11 Tf
+(- `EnsureAdmin`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `EnsureOfficialAdmin`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `EnsureOtpVerified`) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(4.2 Dashboard) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- `DashboardController` collects participant, sponsorship, user, and notification) Tj
+0 -15 Td
+/F1 11 Tf
+(  statistics.) Tj
+0 -15 Td
+/F1 11 Tf
+(- The dashboard changes based on role:) Tj
+0 -15 Td
+/F1 11 Tf
+(- Official Admin: sees all centers) Tj
+0 -15 Td
+/F1 11 Tf
+(- Admin: sees assigned managed centers) Tj
+0 -15 Td
+/F1 11 Tf
+(- User: sees only the user center) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(4.3 Participant management) Tj
+ET
+endstream
+endobj
+6 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R >> >> /Contents 5 0 R >>
+endobj
+7 0 obj
+<< /Length 2672 >>
+stream
+BT
+/F1 11 Tf
+50 782 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- `ParticipantController` handles:) Tj
+0 -15 Td
+/F1 11 Tf
+(- participant listing) Tj
+0 -15 Td
+/F1 11 Tf
+(- quick search) Tj
+0 -15 Td
+/F1 11 Tf
+(- participant creation) Tj
+0 -15 Td
+/F1 11 Tf
+(- participant editing and updating) Tj
+0 -15 Td
+/F1 11 Tf
+(- participant deletion) Tj
+0 -15 Td
+/F1 11 Tf
+(- single participant view) Tj
+0 -15 Td
+/F1 11 Tf
+(- A participant stores profile, education, spiritual, medical, address, and) Tj
+0 -15 Td
+/F1 11 Tf
+(  favorites information.) Tj
+0 -15 Td
+/F1 11 Tf
+(- The system generates `local_participant_id` from `center_id` plus a running) Tj
+0 -15 Td
+/F1 11 Tf
+(  serial number.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Photo upload stores the image in public storage and sets the next photo update) Tj
+0 -15 Td
+/F1 11 Tf
+(  due date to six months later.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(4.4 Sponsorship management) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- `ParticipantSponsorshipController` is a standalone module for sponsorship) Tj
+0 -15 Td
+/F1 11 Tf
+(  records.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Sponsorship records are linked to participants through `participant_id`.) Tj
+0 -15 Td
+/F1 11 Tf
+(- When sponsorship data is created or updated, the participant summary fields can) Tj
+0 -15 Td
+/F1 11 Tf
+(  also be synchronized.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(4.5 Center notifications) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- `CenterNotificationService` creates center notifications based on:) Tj
+0 -15 Td
+/F1 11 Tf
+(- overdue photo updates) Tj
+0 -15 Td
+/F1 11 Tf
+(- photo updates due within 30 days) Tj
+0 -15 Td
+/F1 11 Tf
+(- recent participant updates) Tj
+0 -15 Td
+/F1 11 Tf
+(- newly created participants) Tj
+0 -15 Td
+/F1 11 Tf
+(- `CenterNotificationController` shows notifications and supports marking one or) Tj
+0 -15 Td
+/F1 11 Tf
+(  all as read.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(4.6 Admin management) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- `AdminDashboardController` provides administrative metrics.) Tj
+0 -15 Td
+/F1 11 Tf
+(- `UserManagementController` handles:) Tj
+0 -15 Td
+/F1 11 Tf
+(- user creation) Tj
+0 -15 Td
+/F1 11 Tf
+(- user editing) Tj
+0 -15 Td
+/F1 11 Tf
+(- password reset) Tj
+0 -15 Td
+/F1 11 Tf
+(- center assignment) Tj
+0 -15 Td
+/F1 11 Tf
+(- `OfficialAdminController` provides a system-wide overview across all centers.) Tj
+0 -15 Td
+/F1 11 Tf
+(- `CenterReportController` provides reports and CSV exports for:) Tj
+0 -15 Td
+/F1 11 Tf
+(- participants) Tj
+0 -15 Td
+/F1 11 Tf
+(- users) Tj
+0 -15 Td
+/F1 11 Tf
+(- notifications) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(5. Core models and relationships) Tj
+ET
+endstream
+endobj
+8 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R >> >> /Contents 7 0 R >>
+endobj
+9 0 obj
+<< /Length 2114 >>
+stream
+BT
+/F1 11 Tf
+50 782 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(5.1 User) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Responsibilities:) Tj
+0 -15 Td
+/F1 11 Tf
+(- authentication) Tj
+0 -15 Td
+/F1 11 Tf
+(- role management) Tj
+0 -15 Td
+/F1 11 Tf
+(- center access control) Tj
+0 -15 Td
+/F1 11 Tf
+(- OTP ownership) Tj
+0 -15 Td
+/F1 11 Tf
+(- notification read tracking) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Defined roles:) Tj
+0 -15 Td
+/F1 11 Tf
+(- `official_admin`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `admin`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `user`) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Relationships:) Tj
+0 -15 Td
+/F1 11 Tf
+(- a user belongs to one center through `center_id`) Tj
+0 -15 Td
+/F1 11 Tf
+(- a user has many OTP codes) Tj
+0 -15 Td
+/F1 11 Tf
+(- an admin user can manage many centers through `center_user_assignments`) Tj
+0 -15 Td
+/F1 11 Tf
+(- a user has many notification reads) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(5.2 Center) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Responsibilities:) Tj
+0 -15 Td
+/F1 11 Tf
+(- storing the center identity) Tj
+0 -15 Td
+/F1 11 Tf
+(- linking users and assigned admins to a center) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Relationships:) Tj
+0 -15 Td
+/F1 11 Tf
+(- a center has many users) Tj
+0 -15 Td
+/F1 11 Tf
+(- a center belongs to many assigned admin users) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(5.3 Participant) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Responsibilities:) Tj
+0 -15 Td
+/F1 11 Tf
+(- storing complete participant information) Tj
+0 -15 Td
+/F1 11 Tf
+(- tracking participation status) Tj
+0 -15 Td
+/F1 11 Tf
+(- tracking photo lifecycle) Tj
+0 -15 Td
+/F1 11 Tf
+(- linking to sponsorship records) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Relationships:) Tj
+0 -15 Td
+/F1 11 Tf
+(- a participant belongs to one center) Tj
+0 -15 Td
+/F1 11 Tf
+(- a participant has many sponsorships) Tj
+0 -15 Td
+/F1 11 Tf
+(- a participant has one latest sponsorship) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(5.4 ParticipantSponsorship) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Responsibilities:) Tj
+ET
+endstream
+endobj
+10 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R >> >> /Contents 9 0 R >>
+endobj
+11 0 obj
+<< /Length 2002 >>
+stream
+BT
+/F1 11 Tf
+50 782 Td
+/F1 11 Tf
+(- storing funding type) Tj
+0 -15 Td
+/F1 11 Tf
+(- sponsorship status) Tj
+0 -15 Td
+/F1 11 Tf
+(- sponsor details) Tj
+0 -15 Td
+/F1 11 Tf
+(- sponsorship start date) Tj
+0 -15 Td
+/F1 11 Tf
+(- sponsorship category) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Relationships:) Tj
+0 -15 Td
+/F1 11 Tf
+(- a sponsorship belongs to a participant) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(5.5 CenterNotification) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Responsibilities:) Tj
+0 -15 Td
+/F1 11 Tf
+(- storing center-level notifications) Tj
+0 -15 Td
+/F1 11 Tf
+(- storing due dates and notification metadata) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Relationships:) Tj
+0 -15 Td
+/F1 11 Tf
+(- a notification belongs to a participant) Tj
+0 -15 Td
+/F1 11 Tf
+(- a notification has many reads) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(5.6 OtpCode) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Responsibilities:) Tj
+0 -15 Td
+/F1 11 Tf
+(- storing the verification code) Tj
+0 -15 Td
+/F1 11 Tf
+(- storing expiry time) Tj
+0 -15 Td
+/F1 11 Tf
+(- tracking used or unused state) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(6. High-level database structure) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Main tables visible from the migrations:) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- `users`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `otp_codes`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `centers`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `participants`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `participant_sponsorships`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `center_notifications`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `center_notification_reads`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `center_user_assignments`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `cache`) Tj
+0 -15 Td
+/F1 11 Tf
+(- `jobs`) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(High-level data relationships:) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(centers) Tj
+0 -15 Td
+/F1 11 Tf
+(|--< users) Tj
+0 -15 Td
+/F1 11 Tf
+(|--< participants) Tj
+ET
+endstream
+endobj
+12 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R >> >> /Contents 11 0 R >>
+endobj
+13 0 obj
+<< /Length 2499 >>
+stream
+BT
+/F1 11 Tf
+50 782 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(users) Tj
+0 -15 Td
+/F1 11 Tf
+(|--< otp_codes) Tj
+0 -15 Td
+/F1 11 Tf
+(|--< center_notification_reads) Tj
+0 -15 Td
+/F1 11 Tf
+(`--< center_user_assignments >-- centers) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(participants) Tj
+0 -15 Td
+/F1 11 Tf
+(|--< participant_sponsorships) Tj
+0 -15 Td
+/F1 11 Tf
+(`--< center_notifications) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(center_notifications) Tj
+0 -15 Td
+/F1 11 Tf
+(`--< center_notification_reads) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(7. System request flow) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(7.1 Login mpaka dashboard) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(1. The user logs in through the login form.) Tj
+0 -15 Td
+/F1 11 Tf
+(2. If credentials are valid, the system redirects the user to OTP verification.) Tj
+0 -15 Td
+/F1 11 Tf
+(3. The OTP is sent by email and stored in `otp_codes`.) Tj
+0 -15 Td
+/F1 11 Tf
+(4. When the user verifies the OTP, the session gets `otp_verified = true`.) Tj
+0 -15 Td
+/F1 11 Tf
+(5. The user can then access the dashboard and other routes protected by `auth` and) Tj
+0 -15 Td
+/F1 11 Tf
+(`otp`.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(7.2 Participant create/update flow) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(1. The user opens the participant form.) Tj
+0 -15 Td
+/F1 11 Tf
+(2. The system validates the submitted fields.) Tj
+0 -15 Td
+/F1 11 Tf
+(3. The center scope is determined from the authenticated user.) Tj
+0 -15 Td
+/F1 11 Tf
+(4. A local participant ID is generated.) Tj
+0 -15 Td
+/F1 11 Tf
+(5. If a photo is uploaded, the file is stored and the next photo due date is set.) Tj
+0 -15 Td
+/F1 11 Tf
+(6. Sponsorship summary data may be synchronized to the participant.) Tj
+0 -15 Td
+/F1 11 Tf
+(7. A create or update notification may be generated.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 12 Tf
+(7.3 Access control flow) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(1. The system checks the user role.) Tj
+0 -15 Td
+/F1 11 Tf
+(2. The system resolves `accessibleCenterIds\(\)`.) Tj
+0 -15 Td
+/F1 11 Tf
+(3. Most queries are filtered through the `forCenter\(...\)` scope.) Tj
+0 -15 Td
+/F1 11 Tf
+(4. This prevents cross-center data access.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(8. Views and UI structure) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(The views are organized by module:) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+ET
+endstream
+endobj
+14 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R >> >> /Contents 13 0 R >>
+endobj
+15 0 obj
+<< /Length 3063 >>
+stream
+BT
+/F1 11 Tf
+50 782 Td
+/F1 11 Tf
+(- `resources/views/layouts`: main layouts, guest layout, navigation) Tj
+0 -15 Td
+/F1 11 Tf
+(- `resources/views/auth`: login, register, OTP verification, password flows) Tj
+0 -15 Td
+/F1 11 Tf
+(- `resources/views/dashboard`: main dashboard) Tj
+0 -15 Td
+/F1 11 Tf
+(- `resources/views/participants`: list, create, edit, show) Tj
+0 -15 Td
+/F1 11 Tf
+(- `resources/views/sponsorships`: list, create, edit) Tj
+0 -15 Td
+/F1 11 Tf
+(- `resources/views/notifications`: notification center) Tj
+0 -15 Td
+/F1 11 Tf
+(- `resources/views/admin`: admin dashboard, users, reports, official overview) Tj
+0 -15 Td
+/F1 11 Tf
+(- `resources/views/components`: reusable Blade components) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(9. Services and reusable logic) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(The main service class currently visible is:) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- `CenterNotificationService`) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(This service moves business logic out of controllers, especially for notification) Tj
+0 -15 Td
+/F1 11 Tf
+(synchronization related to due dates and recent participant updates.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(10. Architectural strengths) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- It follows standard Laravel conventions, which makes the codebase easier to) Tj
+0 -15 Td
+/F1 11 Tf
+(  maintain.) Tj
+0 -15 Td
+/F1 11 Tf
+(- There is a clear separation between routes, controllers, models, views,) Tj
+0 -15 Td
+/F1 11 Tf
+(  middleware, and services.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Center-level access control is applied through query scopes and helper methods.) Tj
+0 -15 Td
+/F1 11 Tf
+(- OTP adds extra protection beyond normal login.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Notification generation has already been extracted into a dedicated service) Tj
+0 -15 Td
+/F1 11 Tf
+(  class.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(11. Improvement opportunities) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(- Move long participant validations into dedicated Form Request classes.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Add tests for authorization, OTP flow, and notifications.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Introduce more service classes if the business logic continues to grow.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Add reporting abstractions if exports and analytics become more complex.) Tj
+0 -15 Td
+/F1 11 Tf
+(- Consider queues for OTP emails and notification-heavy work in production.) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 13 Tf
+(12. Conclusion) Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+() Tj
+0 -15 Td
+/F1 11 Tf
+(Compassion Portal is a Laravel monolith organized for center-based participant) Tj
+0 -15 Td
+/F1 11 Tf
+(operations. Its current structure supports role-based access, center-scoped) Tj
+0 -15 Td
+/F1 11 Tf
+(visibility, participant record management, sponsorship tracking, admin oversight, and) Tj
+0 -15 Td
+/F1 11 Tf
+(notification handling for time-sensitive events such as photo due dates.) Tj
+ET
+endstream
+endobj
+16 0 obj
+<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 1 0 R >> >> /Contents 15 0 R >>
+endobj
+17 0 obj
+<< /Type /Catalog /Pages 2 0 R >>
+endobj
+xref
+0 18
+0000000000 65535 f 
+0000000009 00000 n 
+0000000079 00000 n 
+0000000176 00000 n 
+0000002502 00000 n 
+0000002628 00000 n 
+0000004880 00000 n 
+0000005006 00000 n 
+0000007730 00000 n 
+0000007856 00000 n 
+0000010022 00000 n 
+0000010149 00000 n 
+0000012204 00000 n 
+0000012332 00000 n 
+0000014884 00000 n 
+0000015012 00000 n 
+0000018128 00000 n 
+0000018256 00000 n 
+trailer
+<< /Size 18 /Root 17 0 R >>
+startxref
+18306
+%%EOF

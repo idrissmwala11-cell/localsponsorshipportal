@@ -190,7 +190,7 @@ class User extends Authenticatable
         return match (true) {
             str_contains($value, 'fpct') || str_contains($value, 'free pentecostal') => self::PROJECT_FPCT,
             str_contains($value, 'pagt') => self::PROJECT_PAGT,
-            str_contains($value, 'tagt') => self::PROJECT_TAG,
+            str_contains($value, 'tagt') => self::PROJECT_TAGT,
             str_contains($value, 'tag') || str_contains($value, 'tanzania assemblies of god') => self::PROJECT_TAG,
             str_contains($value, 'eagt') || str_contains($value, 'assemblies of god') => self::PROJECT_EAGT,
             str_contains($value, 'kkkt') || str_contains($value, 'elct') || str_contains($value, 'evangelical lutheran') => self::PROJECT_KKKT,
@@ -205,16 +205,30 @@ class User extends Authenticatable
     public static function projectLogoFor(?string $projectName): string
     {
         return match (self::detectProjectKey($projectName)) {
-            self::PROJECT_ANGLICAN => self::versionedAsset('images/project-anglican.jfif'),
-            self::PROJECT_MORAVIAN => self::versionedAsset('images/project-moravian.jpeg'),
-            self::PROJECT_BAPTIST => self::versionedAsset('images/project-baptist.jfif'),
-            self::PROJECT_PAGT => self::versionedAsset('images/project-pagt.jfif'),
-            self::PROJECT_FPCT => self::versionedAsset('images/project-fpct.jfif'),
-            self::PROJECT_TAG => self::versionedAsset('images/project-tag.png'),
-            self::PROJECT_EAGT => self::versionedAsset('images/project-eagt.png'),
-            self::PROJECT_KKKT => self::versionedAsset('images/project-kkkt.png'),
+            self::PROJECT_ANGLICAN => self::projectLogoAsset('project-anglican'),
+            self::PROJECT_MORAVIAN => self::projectLogoAsset('project-moravian'),
+            self::PROJECT_BAPTIST => self::projectLogoAsset('project-baptist'),
+            self::PROJECT_PAGT => self::projectLogoAsset('project-pagt'),
+            self::PROJECT_FPCT => self::projectLogoAsset('project-fpct'),
+            self::PROJECT_TAG => self::projectLogoAsset('project-tag'),
+            self::PROJECT_TAGT => self::projectLogoAsset('project-tag'),
+            self::PROJECT_EAGT => self::projectLogoAsset('project-eagt'),
+            self::PROJECT_KKKT => self::projectLogoAsset('project-kkkt'),
             default => self::versionedAsset('images/compassion-mark.png'),
         };
+    }
+
+    protected static function projectLogoAsset(string $baseName): string
+    {
+        foreach (['png', 'jpg', 'jpeg', 'jfif'] as $extension) {
+            $path = 'images/' . $baseName . '.' . $extension;
+
+            if (File::exists(public_path($path))) {
+                return self::versionedAsset($path);
+            }
+        }
+
+        return self::versionedAsset('images/compassion-mark.png');
     }
 
     protected static function versionedAsset(string $path): string

@@ -722,65 +722,67 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="mt-4 border-t border-slate-200/80 pt-4">
-                            <div class="flex flex-col items-center gap-1.5 mb-3">
-                                <span class="dashboard-tag">Quick Access</span>
-                                <p class="text-slate-500 text-xs text-center">Choose a section to open for more details.</p>
-                            </div>
+                        @unless(auth()->user()->isOfficialAdmin())
+                            <div class="mt-4 border-t border-slate-200/80 pt-4">
+                                <div class="flex flex-col items-center gap-1.5 mb-3">
+                                    <span class="dashboard-tag">Quick Access</span>
+                                    <p class="text-slate-500 text-xs text-center">Choose a section to open for more details.</p>
+                                </div>
 
-                            <div class="quick-access-grid">
-                                @if(Route::has('participants.index'))
-                                    <a href="{{ route('participants.index') }}" class="action-tile">
-                                        <span class="action-icon"><i class="bi bi-people-fill"></i></span>
-                                        <span class="flex-1 text-left">
-                                            <span class="action-title">Participants</span>
-                                            <span class="block action-copy">Open participant records stored in the participant form.</span>
-                                        </span>
-                                        <i class="bi bi-arrow-up-right text-slate-400"></i>
-                                    </a>
-                                @endif
-                                @if(Route::has('sponsorships.index'))
-                                    <a href="{{ route('sponsorships.index') }}" class="action-tile">
-                                        <span class="action-icon"><i class="bi bi-cash-coin"></i></span>
-                                        <span class="flex-1 text-left">
-                                            <span class="action-title">Sponsorships</span>
-                                            <span class="block action-copy">Track sponsorship records linked to participants.</span>
-                                        </span>
-                                        <i class="bi bi-arrow-up-right text-slate-400"></i>
-                                    </a>
-                                @endif
-                                @if(Route::has('notifications.index'))
-                                    <a href="{{ route('notifications.index') }}" class="action-tile">
-                                        <span class="action-icon"><i class="bi bi-bell-fill"></i></span>
-                                        <span class="flex-1 text-left">
-                                            <span class="action-title">Notifications</span>
-                                            <span class="block action-copy">Review admin messages sent to your center.</span>
-                                        </span>
-                                        <i class="bi bi-arrow-up-right text-slate-400"></i>
-                                    </a>
-                                @endif
-                                @if(Route::has('treatments.index'))
-                                    <a href="{{ route('treatments.index') }}" class="action-tile">
-                                        <span class="action-icon"><i class="bi bi-heart-pulse-fill"></i></span>
-                                        <span class="flex-1 text-left">
-                                            <span class="action-title">Treatment</span>
-                                            <span class="block action-copy">Record and review participant treatment history separately.</span>
-                                        </span>
-                                        <i class="bi bi-arrow-up-right text-slate-400"></i>
-                                    </a>
-                                @endif
-                                @if(($isAdmin ?? false) && Route::has('admin.users.index'))
-                                    <a href="{{ route('admin.users.index') }}" class="action-tile">
-                                        <span class="action-icon"><i class="bi bi-person-badge-fill"></i></span>
-                                        <span class="flex-1 text-left">
-                                            <span class="action-title">Manage Users</span>
-                                            <span class="block action-copy">Update permissions and center assignments.</span>
-                                        </span>
-                                        <i class="bi bi-arrow-up-right text-slate-400"></i>
-                                    </a>
-                                @endif
-                              </div>
-                          </div>
+                                <div class="quick-access-grid">
+                                    @if(Route::has('participants.index'))
+                                        <a href="{{ route('participants.index') }}" class="action-tile">
+                                            <span class="action-icon"><i class="bi bi-people-fill"></i></span>
+                                            <span class="flex-1 text-left">
+                                                <span class="action-title">Participants</span>
+                                                <span class="block action-copy">Open participant records stored in the participant form.</span>
+                                            </span>
+                                            <i class="bi bi-arrow-up-right text-slate-400"></i>
+                                        </a>
+                                    @endif
+                                    @if(Route::has('sponsorships.index'))
+                                        <a href="{{ route('sponsorships.index') }}" class="action-tile">
+                                            <span class="action-icon"><i class="bi bi-cash-coin"></i></span>
+                                            <span class="flex-1 text-left">
+                                                <span class="action-title">Sponsorships</span>
+                                                <span class="block action-copy">Track sponsorship records linked to participants.</span>
+                                            </span>
+                                            <i class="bi bi-arrow-up-right text-slate-400"></i>
+                                        </a>
+                                    @endif
+                                    @if(Route::has('notifications.index'))
+                                        <a href="{{ route('notifications.index') }}" class="action-tile">
+                                            <span class="action-icon"><i class="bi bi-bell-fill"></i></span>
+                                            <span class="flex-1 text-left">
+                                                <span class="action-title">Notifications</span>
+                                                <span class="block action-copy">Review admin messages sent to your center.</span>
+                                            </span>
+                                            <i class="bi bi-arrow-up-right text-slate-400"></i>
+                                        </a>
+                                    @endif
+                                    @if(Route::has('treatments.index'))
+                                        <a href="{{ route('treatments.index') }}" class="action-tile">
+                                            <span class="action-icon"><i class="bi bi-heart-pulse-fill"></i></span>
+                                            <span class="flex-1 text-left">
+                                                <span class="action-title">Treatment</span>
+                                                <span class="block action-copy">Record and review participant treatment history separately.</span>
+                                            </span>
+                                            <i class="bi bi-arrow-up-right text-slate-400"></i>
+                                        </a>
+                                    @endif
+                                    @if(($isAdmin ?? false) && Route::has('admin.users.index'))
+                                        <a href="{{ route('admin.users.index') }}" class="action-tile">
+                                            <span class="action-icon"><i class="bi bi-person-badge-fill"></i></span>
+                                            <span class="flex-1 text-left">
+                                                <span class="action-title">Manage Users</span>
+                                                <span class="block action-copy">Update permissions and center assignments.</span>
+                                            </span>
+                                            <i class="bi bi-arrow-up-right text-slate-400"></i>
+                                        </a>
+                                    @endif
+                                </div>
+                            </div>
+                        @endunless
                   </div>
         </div>
 

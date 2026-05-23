@@ -24,8 +24,9 @@
         $currentCenterName = $currentUser?->isOfficialAdmin() ? 'All Centers' : (count($accessibleCenterIds) > 1 ? 'Managed Centers' : (optional($currentUser?->center)->center_name ?? $currentCenterId));
         $notificationCount = $layoutUnreadNotificationsCount ?? 0;
         $currentUserPhoto = $currentUser?->profile_photo_url;
+        $fallbackProjectLogo = asset('images/compassion-mark.png');
         $currentProjectLogos = $currentUser?->project_logo_paths ?? [asset('images/compassion-mark.png')];
-        $currentProjectLogo = $currentProjectLogos[0] ?? asset('images/compassion-mark.png');
+        $currentProjectLogo = $currentProjectLogos[0] ?? $fallbackProjectLogo;
         $currentProjectName = $currentUser?->project_display_name ?? 'Local Sponsorship Portal';
         $currentPortalTitle = $currentUser?->portal_title ?? \App\Models\User::defaultPortalTitle();
         $currentPortalSubtitle = $currentUser?->portal_subtitle ?? \App\Models\User::defaultPortalSubtitle();
@@ -42,7 +43,9 @@
                                 src="{{ $currentProjectLogo }}"
                                 alt="{{ $currentProjectName }}"
                                 class="js-portal-rotating-logo"
-                                data-logos='@json($currentProjectLogos)'>
+                                data-logos='@json($currentProjectLogos)'
+                                data-fallback-logo="{{ $fallbackProjectLogo }}"
+                                onerror="this.onerror=null; this.src=this.dataset.fallbackLogo;">
                         </div>
                         <div>
                             <h1 class="text-white font-bold text-sm leading-tight">{{ $currentProjectName }}</h1>
@@ -195,7 +198,9 @@
                                 src="{{ $currentProjectLogo }}"
                                 alt="{{ $currentProjectName }}"
                                 class="js-portal-rotating-logo"
-                                data-logos='@json($currentProjectLogos)'>
+                                data-logos='@json($currentProjectLogos)'
+                                data-fallback-logo="{{ $fallbackProjectLogo }}"
+                                onerror="this.onerror=null; this.src=this.dataset.fallbackLogo;">
                         </div>
                         <div>
                             <p class="text-white font-bold text-sm">{{ $currentProjectName }}</p>
@@ -326,7 +331,9 @@
                                     src="{{ $currentProjectLogo }}"
                                     alt="{{ $currentProjectName }}"
                                     class="js-portal-rotating-logo"
-                                    data-logos='@json($currentProjectLogos)'>
+                                    data-logos='@json($currentProjectLogos)'
+                                    data-fallback-logo="{{ $fallbackProjectLogo }}"
+                                    onerror="this.onerror=null; this.src=this.dataset.fallbackLogo;">
                             </div>
                             <div class="hidden sm:block min-w-0">
                                 <h2 class="topbar-title text-slate-900 font-bold text-lg leading-tight">{{ strtoupper($currentPortalTitle) }}</h2>

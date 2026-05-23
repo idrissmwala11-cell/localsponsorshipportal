@@ -3,8 +3,16 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    @php
+        $siteFaviconPath = public_path('images/site-favicon.png');
+        $siteFaviconUrl = file_exists($siteFaviconPath)
+            ? asset('images/site-favicon.png') . '?v=' . filemtime($siteFaviconPath)
+            : asset('images/compassion-mark.png');
+    @endphp
     <title>Local Sponsorship Portal | Kasulu & Kigoma Northern Clusters</title>
 
+    <link rel="icon" type="image/png" href="{{ $siteFaviconUrl }}">
+    <link rel="apple-touch-icon" href="{{ $siteFaviconUrl }}">
     <link rel="preconnect" href="https://fonts.bunny.net">
     <link href="https://fonts.bunny.net/css?family=figtree:400,500,600;700;800&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" />

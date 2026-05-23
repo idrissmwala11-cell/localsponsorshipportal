@@ -17,6 +17,21 @@ class ParticipantController extends Controller
 {
     protected const PHOTO_UPDATE_MONTHS = 18;
 
+    protected function canAccessParticipant(Participant $participant): bool
+    {
+        $user = Auth::user();
+
+        if ($user->isOfficialAdmin()) {
+            return true;
+        }
+
+        if ($user->role === \App\Models\User::ROLE_USER) {
+            return (int) $participant->created_by_user_id === (int) Auth::id();
+        }
+
+        return $user->canAccessCenter($participant->center_id);
+    }
+
     public function search(Request $request)
     {
         $search = trim((string) $request->input('q', ''));
@@ -159,7 +174,7 @@ class ParticipantController extends Controller
     {
         $participant = Participant::with(['latestSponsorship', 'sponsorships' => fn ($query) => $query->latest()])->findOrFail($id);
 
-        if (!Auth::user()->canAccessCenter($participant->center_id) || (Auth::user()->role === \App\Models\User::ROLE_USER && $participant->created_by_user_id !== Auth::id())) {
+        if (!$this->canAccessParticipant($participant)) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -170,7 +185,7 @@ class ParticipantController extends Controller
     {
         $participant = Participant::with(['latestSponsorship', 'sponsorships' => fn ($query) => $query->latest()])->findOrFail($id);
 
-        if (!Auth::user()->canAccessCenter($participant->center_id) || (Auth::user()->role === \App\Models\User::ROLE_USER && $participant->created_by_user_id !== Auth::id())) {
+        if (!$this->canAccessParticipant($participant)) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -181,7 +196,7 @@ class ParticipantController extends Controller
     {
         $participant = Participant::with(['latestSponsorship', 'sponsorships' => fn ($query) => $query->latest()])->findOrFail($id);
 
-        if (!Auth::user()->canAccessCenter($participant->center_id) || (Auth::user()->role === \App\Models\User::ROLE_USER && $participant->created_by_user_id !== Auth::id())) {
+        if (!$this->canAccessParticipant($participant)) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -227,7 +242,7 @@ class ParticipantController extends Controller
     {
         $participant = Participant::findOrFail($id);
 
-        if (!Auth::user()->canAccessCenter($participant->center_id) || (Auth::user()->role === \App\Models\User::ROLE_USER && $participant->created_by_user_id !== Auth::id())) {
+        if (!$this->canAccessParticipant($participant)) {
             abort(403, 'Unauthorized access.');
         }
 

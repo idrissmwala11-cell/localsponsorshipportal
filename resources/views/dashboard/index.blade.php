@@ -414,8 +414,10 @@
                 position: relative;
                 display: inline-flex;
                 align-items: center;
+                gap: 0.42rem;
                 justify-content: center;
-                padding: 0.55rem 1rem;
+                min-height: 2rem;
+                padding: 0.38rem 0.72rem;
                 border-radius: 999px;
                 border: 1px solid rgba(125, 211, 252, 0.28);
                 background:
@@ -423,10 +425,23 @@
                     radial-gradient(circle at 12% 50%, rgba(14, 165, 233, 0.12), transparent 42%),
                     radial-gradient(circle at 88% 50%, rgba(59, 130, 246, 0.1), transparent 42%);
                 box-shadow:
-                    0 14px 28px -24px rgba(37, 99, 235, 0.28),
+                    0 12px 20px -22px rgba(37, 99, 235, 0.24),
                     0 0 0 1px rgba(255, 255, 255, 0.72) inset;
                 overflow: hidden;
                 isolation: isolate;
+            }
+            .developer-credit-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 1.28rem;
+                height: 1.28rem;
+                border-radius: 999px;
+                background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(14, 165, 233, 0.18));
+                color: #2563eb;
+                font-size: 0.68rem;
+                flex-shrink: 0;
+                box-shadow: 0 0 14px rgba(125, 211, 252, 0.18);
             }
             .developer-credit::before {
                 content: '';
@@ -437,26 +452,72 @@
                 animation: developer-credit-sheen 6s linear infinite;
                 z-index: -1;
             }
-            .developer-credit-text {
-                font-size: 0.68rem;
+            .developer-credit-copy {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.24rem;
+                min-width: 0;
+            }
+            .developer-credit-label {
+                font-size: 0.56rem;
                 font-weight: 900;
-                letter-spacing: 0.1em;
+                letter-spacing: 0.14em;
                 text-transform: uppercase;
                 color: #1e40af;
-                text-shadow: 0 0 20px rgba(125, 211, 252, 0.24);
-                animation: developer-credit-breathe 4.2s ease-in-out infinite;
+                text-shadow: 0 0 16px rgba(125, 211, 252, 0.18);
+                animation: developer-credit-label-fade 4.8s ease-in-out infinite;
                 white-space: nowrap;
             }
-            @keyframes developer-credit-breathe {
+            .developer-credit-name {
+                display: inline-block;
+                max-width: 0;
+                overflow: hidden;
+                white-space: nowrap;
+                font-size: 0.58rem;
+                font-weight: 900;
+                letter-spacing: 0.08em;
+                color: #0f3fa8;
+                border-right: 1px solid rgba(37, 99, 235, 0.65);
+                text-shadow: 0 0 14px rgba(125, 211, 252, 0.16);
+                animation: developer-credit-type 4.8s steps(19, end) infinite, developer-credit-caret 0.7s step-end infinite;
+            }
+            @keyframes developer-credit-label-fade {
+                0%, 12% {
+                    opacity: 0;
+                    transform: translateY(1px);
+                }
+                18%, 64% {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+                74%, 100% {
+                    opacity: 0;
+                    transform: translateY(-1px);
+                }
+            }
+            @keyframes developer-credit-type {
+                0%, 20% {
+                    max-width: 0;
+                    opacity: 0;
+                }
+                24% {
+                    opacity: 1;
+                }
+                24%, 70% {
+                    max-width: 15.5ch;
+                    opacity: 1;
+                }
+                84%, 100% {
+                    max-width: 0;
+                    opacity: 0;
+                }
+            }
+            @keyframes developer-credit-caret {
                 0%, 100% {
-                    opacity: 0.42;
-                    transform: translateY(0) scale(0.985);
-                    filter: drop-shadow(0 0 0 rgba(96, 165, 250, 0));
+                    border-right-color: rgba(37, 99, 235, 0.65);
                 }
                 50% {
-                    opacity: 1;
-                    transform: translateY(-1px) scale(1);
-                    filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.18));
+                    border-right-color: transparent;
                 }
             }
             @keyframes developer-credit-sheen {
@@ -713,7 +774,11 @@
                                     <p class="text-slate-600 text-[11px] mt-1.5 max-w-3xl">A quick operational summary of participant and sponsorship records only.</p>
                                 </div>
                                 <div class="developer-credit self-start sm:self-center">
-                                    <span class="developer-credit-text">Developer (idriss Ict Services)</span>
+                                    <span class="developer-credit-icon"><i class="bi bi-code-slash"></i></span>
+                                    <span class="developer-credit-copy">
+                                        <span class="developer-credit-label">Developer</span>
+                                        <span class="developer-credit-name">idriss Ict Services</span>
+                                    </span>
                                 </div>
                         </div>
 

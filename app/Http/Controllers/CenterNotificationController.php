@@ -44,8 +44,8 @@ class CenterNotificationController extends Controller
             : collect();
 
         $adminRecipients = $user->role === User::ROLE_USER
-            ? collect()
-            : $this->availableAdminRecipientsFor($user);
+            ? $this->availableAdminRecipientsFor($user)
+            : collect();
 
         $officialAdminRecipients = $user->isOfficialAdmin()
             ? $this->availableOfficialAdminAdminRecipientsFor($user)

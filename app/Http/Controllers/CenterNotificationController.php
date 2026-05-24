@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use Throwable;
@@ -39,21 +40,12 @@ class CenterNotificationController extends Controller
             ->paginate(12);
 
         $managedUsers = $user->isAdmin()
-            ? User::query()
-                ->forCenter($user->accessibleCenterIds())
-                ->where('role', User::ROLE_USER)
-                ->orderBy('center_id')
-                ->orderBy('name')
-                ->get()
+            ? $this->availableManagedUsersFor($user)
             : collect();
 
         $adminRecipients = $user->isAdmin()
             ? collect()
-            : User::query()
-                ->forCenter($user->accessibleCenterIds())
-                ->whereIn('role', [User::ROLE_ADMIN, User::ROLE_OFFICIAL_ADMIN])
-                ->orderBy('name')
-                ->get();
+            : $this->availableAdminRecipientsFor($user);
 
         return view('notifications.index', [
             'notifications' => $notifications,
@@ -138,12 +130,10 @@ class CenterNotificationController extends Controller
                     'message' => ['required', 'string', 'max:2000'],
                 ]);
 
-                $recipient = User::query()
-                    ->whereKey($data['target_user_id'])
-                    ->whereIn('role', [User::ROLE_ADMIN, User::ROLE_OFFICIAL_ADMIN])
-                    ->firstOrFail();
+                $recipient = $this->availableAdminRecipientsFor($user)
+                    ->firstWhere('id', (int) $data['target_user_id']);
 
-                abort_unless($recipient->canAccessCenter($user->center_id), 403);
+                abort_unless($recipient, 403, 'Unauthorized access.');
 
                 CenterNotification::create([
                     'center_id' => $user->center_id,
@@ -230,5 +220,67 @@ class CenterNotificationController extends Controller
         if (!$request->user()->canAccessCenter($notification->center_id)) {
             abort(403, 'Cross-center access is not allowed.');
         }
+    }
+
+    protected function availableManagedUsersFor(User $user): Collection
+    {
+        $supervisedUsers = Schema::hasTable('admin_user_supervisions')
+            ? $user->supervisedUsers()
+                ->where('role', User::ROLE_USER)
+                ->orderBy('center_id')
+                ->orderBy('name')
+                ->get()
+            : collect();
+
+        if ($supervisedUsers->isNotEmpty()) {
+            return $supervisedUsers;
+        }
+
+        return User::query()
+            ->forCenter($user->accessibleCenterIds())
+            ->where('role', User::ROLE_USER)
+            ->orderBy('center_id')
+            ->orderBy('name')
+            ->get();
+    }
+
+    protected function availableAdminRecipientsFor(User $user): Collection
+    {
+        $recipients = collect();
+
+        if (Schema::hasTable('admin_user_supervisions')) {
+            $recipients = $recipients->merge(
+                $user->supervisingAdmins()
+                    ->whereIn('role', [User::ROLE_ADMIN, User::ROLE_OFFICIAL_ADMIN])
+                    ->get()
+            );
+        }
+
+        if (filled($user->center_id)) {
+            $recipients = $recipients->merge(
+                User::query()
+                    ->where('role', User::ROLE_ADMIN)
+                    ->where(function ($query) use ($user) {
+                        $query->where('center_id', $user->center_id)
+                            ->orWhereHas('managedCenters', fn ($managedCentersQuery) => $managedCentersQuery->where('centers.center_id', $user->center_id));
+                    })
+                    ->get()
+            );
+        }
+
+        $recipients = $recipients->merge(
+            User::query()
+                ->where('role', User::ROLE_OFFICIAL_ADMIN)
+                ->get()
+        );
+
+        return $recipients
+            ->filter(fn ($recipient) => $recipient->id !== $user->id)
+            ->unique('id')
+            ->sortBy([
+                fn (User $recipient) => $recipient->role === User::ROLE_OFFICIAL_ADMIN ? 0 : 1,
+                fn (User $recipient) => strtolower($recipient->name),
+            ])
+            ->values();
     }
 }

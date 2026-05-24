@@ -97,15 +97,20 @@
                             </div>
                         @else
                             <div>
-                                <label class="workspace-field-label">Send To Admin</label>
+                                <label class="workspace-field-label">Send To Admin / System Administrator</label>
                                 <select name="target_user_id" class="workspace-select px-4 py-3" required>
-                                    <option value="">Select Admin</option>
+                                    <option value="">Select Admin or System Administrator</option>
                                     @foreach(($adminRecipients ?? []) as $adminRecipient)
                                         <option value="{{ $adminRecipient->id }}" @selected((string) old('target_user_id') === (string) $adminRecipient->id)>
-                                            {{ $adminRecipient->name }} | {{ $adminRecipient->display_title }}
+                                            {{ $adminRecipient->name }} | {{ $adminRecipient->display_title }}{{ $adminRecipient->center_id ? ' | ' . $adminRecipient->center_id : '' }}
                                         </option>
                                     @endforeach
                                 </select>
+                                @if(($adminRecipients ?? collect())->isEmpty())
+                                    <p class="mt-2 text-xs text-amber-600">
+                                        No admin recipients are linked to your account yet. Please contact the system administrator.
+                                    </p>
+                                @endif
                             </div>
                         @endif
 

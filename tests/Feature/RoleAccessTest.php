@@ -126,6 +126,57 @@ class RoleAccessTest extends TestCase
         $this->get(route('participants.show', $participant));
     }
 
+    public function test_standard_user_can_view_their_own_participant_even_if_account_center_is_missing(): void
+    {
+        $owner = User::factory()->create([
+            'center_id' => null,
+            'cluster_name' => 'Cluster A',
+        ]);
+
+        $participant = Participant::create([
+            'center_id' => 'TZ0001',
+            'created_by_user_id' => $owner->id,
+            'local_participant_number' => '002',
+            'local_participant_id' => 'TZ0001002',
+            'account_name' => 'Project Account',
+            'preferred_name' => 'Participant Two',
+            'gender' => 'Male',
+            'participant_status' => 'Active',
+        ]);
+
+        $response = $this->actingAs($owner)
+            ->withSession(['otp_verified' => true])
+            ->get(route('participants.show', $participant));
+
+        $response->assertOk();
+        $response->assertSee('Participant Two');
+    }
+
+    public function test_standard_user_can_choose_center_admin_and_system_administrator_in_chat(): void
+    {
+        $user = User::factory()->create([
+            'center_id' => 'TZ0001',
+            'cluster_name' => 'Cluster A',
+        ]);
+
+        $centerAdmin = User::factory()->admin('TZ0001')->create([
+            'name' => 'Center Admin',
+        ]);
+
+        $officialAdmin = User::factory()->officialAdmin()->create([
+            'name' => 'System Administrator',
+        ]);
+
+        $response = $this->actingAs($user)
+            ->withSession(['otp_verified' => true])
+            ->get(route('notifications.index'));
+
+        $response->assertOk();
+        $response->assertSee('Center Admin');
+        $response->assertSee('System Administrator');
+        $response->assertSee('Select Admin or System Administrator');
+    }
+
     public function test_only_official_admin_can_approve_accounts(): void
     {
         $officialAdmin = User::factory()->officialAdmin()->create();

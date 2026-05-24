@@ -410,6 +410,63 @@
             .dashboard-mini-panel .dashboard-table-wrap {
                 overflow-x: auto;
             }
+            .developer-credit {
+                position: relative;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                padding: 0.55rem 1rem;
+                border-radius: 999px;
+                border: 1px solid rgba(125, 211, 252, 0.28);
+                background:
+                    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(239, 246, 255, 0.82)),
+                    radial-gradient(circle at 12% 50%, rgba(14, 165, 233, 0.12), transparent 42%),
+                    radial-gradient(circle at 88% 50%, rgba(59, 130, 246, 0.1), transparent 42%);
+                box-shadow:
+                    0 14px 28px -24px rgba(37, 99, 235, 0.28),
+                    0 0 0 1px rgba(255, 255, 255, 0.72) inset;
+                overflow: hidden;
+                isolation: isolate;
+            }
+            .developer-credit::before {
+                content: '';
+                position: absolute;
+                inset: -35% -18%;
+                background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.2), transparent);
+                transform: translateX(-38%);
+                animation: developer-credit-sheen 6s linear infinite;
+                z-index: -1;
+            }
+            .developer-credit-text {
+                font-size: 0.68rem;
+                font-weight: 900;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: #1e40af;
+                text-shadow: 0 0 20px rgba(125, 211, 252, 0.24);
+                animation: developer-credit-breathe 4.2s ease-in-out infinite;
+                white-space: nowrap;
+            }
+            @keyframes developer-credit-breathe {
+                0%, 100% {
+                    opacity: 0.42;
+                    transform: translateY(0) scale(0.985);
+                    filter: drop-shadow(0 0 0 rgba(96, 165, 250, 0));
+                }
+                50% {
+                    opacity: 1;
+                    transform: translateY(-1px) scale(1);
+                    filter: drop-shadow(0 0 10px rgba(96, 165, 250, 0.18));
+                }
+            }
+            @keyframes developer-credit-sheen {
+                from {
+                    transform: translateX(-46%);
+                }
+                to {
+                    transform: translateX(46%);
+                }
+            }
             .quick-access-grid {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -649,11 +706,14 @@
                 </div>
 
                 <div class="section-panel glass-card dashboard-mini-panel">
-                            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-3">
+                            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
                                 <div>
                                     <span class="dashboard-tag">Status Highlights</span>
                                     <h3 class="text-slate-900 text-base lg:text-lg font-black mt-1">Operational Signals</h3>
                                     <p class="text-slate-600 text-[11px] mt-1.5 max-w-3xl">A quick operational summary of participant and sponsorship records only.</p>
+                                </div>
+                                <div class="developer-credit self-start sm:self-center">
+                                    <span class="developer-credit-text">Developer (idriss Ict Services)</span>
                                 </div>
                         </div>
 

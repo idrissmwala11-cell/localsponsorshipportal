@@ -422,8 +422,6 @@
                 border: none;
                 background: transparent;
                 box-shadow: none;
-                overflow: hidden;
-                isolation: isolate;
             }
             .developer-credit-icon {
                 display: inline-flex;
@@ -438,20 +436,25 @@
                 flex-shrink: 0;
                 box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.24) inset;
             }
-            .developer-credit::before {
-                content: '';
-                position: absolute;
-                inset: -35% -18%;
-                background: linear-gradient(90deg, transparent, rgba(125, 211, 252, 0.2), transparent);
-                transform: translateX(-38%);
-                animation: developer-credit-sheen 6s linear infinite;
-                z-index: -1;
-            }
             .developer-credit-copy {
                 display: inline-flex;
                 align-items: center;
                 gap: 0.32rem;
                 min-width: 0;
+                position: relative;
+                padding-bottom: 0.14rem;
+            }
+            .developer-credit-copy::after {
+                content: '';
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: 0;
+                height: 1px;
+                border-radius: 999px;
+                background: linear-gradient(90deg, rgba(14, 165, 233, 0), rgba(37, 99, 235, 0.85) 18%, rgba(59, 130, 246, 0.95) 50%, rgba(14, 165, 233, 0.82) 82%, rgba(14, 165, 233, 0));
+                opacity: 0.78;
+                animation: developer-credit-line-glow 5.8s ease-in-out infinite;
             }
             .developer-credit-label {
                 font-size: 0.68rem;
@@ -511,12 +514,18 @@
                     transform: translateX(112%);
                 }
             }
-            @keyframes developer-credit-sheen {
-                from {
-                    transform: translateX(-46%);
+            @keyframes developer-credit-line-glow {
+                0%, 16% {
+                    opacity: 0.22;
+                    transform: scaleX(0.88);
                 }
-                to {
-                    transform: translateX(46%);
+                24%, 72% {
+                    opacity: 0.9;
+                    transform: scaleX(1);
+                }
+                84%, 100% {
+                    opacity: 0.22;
+                    transform: scaleX(0.9);
                 }
             }
             .quick-access-grid {

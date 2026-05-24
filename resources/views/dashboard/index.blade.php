@@ -414,19 +414,14 @@
                 position: relative;
                 display: inline-flex;
                 align-items: center;
-                gap: 0.42rem;
+                gap: 0.52rem;
                 justify-content: center;
-                min-height: 2rem;
-                padding: 0.38rem 0.72rem;
+                min-height: 2.1rem;
+                padding: 0.32rem 0;
                 border-radius: 999px;
-                border: 1px solid rgba(125, 211, 252, 0.28);
-                background:
-                    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(239, 246, 255, 0.82)),
-                    radial-gradient(circle at 12% 50%, rgba(14, 165, 233, 0.12), transparent 42%),
-                    radial-gradient(circle at 88% 50%, rgba(59, 130, 246, 0.1), transparent 42%);
-                box-shadow:
-                    0 12px 20px -22px rgba(37, 99, 235, 0.24),
-                    0 0 0 1px rgba(255, 255, 255, 0.72) inset;
+                border: none;
+                background: transparent;
+                box-shadow: none;
                 overflow: hidden;
                 isolation: isolate;
             }
@@ -434,14 +429,14 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                width: 1.28rem;
-                height: 1.28rem;
+                width: 1.45rem;
+                height: 1.45rem;
                 border-radius: 999px;
-                background: linear-gradient(135deg, rgba(37, 99, 235, 0.14), rgba(14, 165, 233, 0.18));
+                background: rgba(37, 99, 235, 0.08);
                 color: #2563eb;
-                font-size: 0.68rem;
+                font-size: 0.8rem;
                 flex-shrink: 0;
-                box-shadow: 0 0 14px rgba(125, 211, 252, 0.18);
+                box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.24) inset;
             }
             .developer-credit::before {
                 content: '';
@@ -459,9 +454,9 @@
                 min-width: 0;
             }
             .developer-credit-label {
-                font-size: 0.56rem;
+                font-size: 0.68rem;
                 font-weight: 900;
-                letter-spacing: 0.14em;
+                letter-spacing: 0.16em;
                 text-transform: uppercase;
                 color: #1e40af;
                 text-shadow: 0 0 16px rgba(125, 211, 252, 0.18);
@@ -474,9 +469,9 @@
                 align-items: center;
                 overflow: hidden;
                 white-space: nowrap;
-                font-size: 0.58rem;
+                font-size: 0.72rem;
                 font-weight: 900;
-                letter-spacing: 0.08em;
+                letter-spacing: 0.06em;
                 color: #0f3fa8;
                 text-shadow: 0 0 14px rgba(125, 211, 252, 0.16);
                 padding-right: 0.1rem;
@@ -770,7 +765,7 @@
                                     <p class="text-slate-600 text-[11px] mt-1.5 max-w-3xl">A quick operational summary of participant and sponsorship records only.</p>
                                 </div>
                                 <div class="developer-credit self-start sm:self-center">
-                                    <span class="developer-credit-icon"><i class="bi bi-code-slash"></i></span>
+                                    <span class="developer-credit-icon"><i class="bi bi-person-workspace"></i></span>
                                     <span class="developer-credit-copy">
                                         <span class="developer-credit-label">Developer</span>
                                         <span class="developer-credit-name">idriss Ict Services</span>

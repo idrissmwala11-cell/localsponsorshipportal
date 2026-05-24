@@ -410,124 +410,6 @@
             .dashboard-mini-panel .dashboard-table-wrap {
                 overflow-x: auto;
             }
-            .developer-credit {
-                position: relative;
-                display: inline-flex;
-                align-items: center;
-                gap: 0.52rem;
-                justify-content: center;
-                min-height: 2.1rem;
-                padding: 0.32rem 0;
-                border-radius: 999px;
-                border: none;
-                background: transparent;
-                box-shadow: none;
-            }
-            .developer-credit-icon {
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 1.45rem;
-                height: 1.45rem;
-                border-radius: 999px;
-                background: rgba(37, 99, 235, 0.08);
-                color: #2563eb;
-                font-size: 0.8rem;
-                flex-shrink: 0;
-                box-shadow: 0 0 0 1px rgba(147, 197, 253, 0.24) inset;
-            }
-            .developer-credit-copy {
-                display: inline-flex;
-                align-items: center;
-                gap: 0.32rem;
-                min-width: 0;
-                position: relative;
-                padding-bottom: 0.14rem;
-            }
-            .developer-credit-copy::after {
-                content: '';
-                position: absolute;
-                left: 0;
-                right: 0;
-                bottom: 0;
-                height: 1px;
-                border-radius: 999px;
-                background: linear-gradient(90deg, rgba(14, 165, 233, 0), rgba(37, 99, 235, 0.85) 18%, rgba(59, 130, 246, 0.95) 50%, rgba(14, 165, 233, 0.82) 82%, rgba(14, 165, 233, 0));
-                opacity: 0.78;
-                animation: developer-credit-line-glow 5.8s ease-in-out infinite;
-            }
-            .developer-credit-label {
-                font-size: 0.68rem;
-                font-weight: 900;
-                letter-spacing: 0.16em;
-                text-transform: uppercase;
-                color: #1e40af;
-                text-shadow: 0 0 16px rgba(125, 211, 252, 0.18);
-                animation: developer-credit-fade 5.8s ease-in-out infinite;
-                white-space: nowrap;
-            }
-            .developer-credit-name {
-                position: relative;
-                display: inline-flex;
-                align-items: center;
-                overflow: hidden;
-                white-space: nowrap;
-                font-size: 0.72rem;
-                font-weight: 900;
-                letter-spacing: 0.06em;
-                color: #0f3fa8;
-                text-shadow: 0 0 14px rgba(125, 211, 252, 0.16);
-                padding-right: 0.1rem;
-                animation: developer-credit-fade 5.8s ease-in-out infinite;
-            }
-            .developer-credit-name::after {
-                content: '';
-                position: absolute;
-                inset: 0 auto 0 0;
-                width: 100%;
-                background: linear-gradient(90deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.18) 86%, transparent 100%);
-                transform: translateX(-112%);
-                animation: developer-credit-reveal 5.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
-            }
-            @keyframes developer-credit-fade {
-                0%, 16% {
-                    opacity: 0;
-                    transform: translateY(1px);
-                }
-                24%, 72% {
-                    opacity: 1;
-                    transform: translateY(0);
-                }
-                84%, 100% {
-                    opacity: 0;
-                    transform: translateY(-1px);
-                }
-            }
-            @keyframes developer-credit-reveal {
-                0%, 20% {
-                    transform: translateX(-112%);
-                }
-                30%, 68% {
-                    transform: translateX(104%);
-                }
-                84%, 100% {
-                    transform: translateX(112%);
-                }
-            }
-            @keyframes developer-credit-line-glow {
-                0%, 16% {
-                    opacity: 0.22;
-                    transform: scaleX(0.88);
-                }
-                24%, 72% {
-                    opacity: 0.9;
-                    transform: scaleX(1);
-                }
-                84%, 100% {
-                    opacity: 0.22;
-                    transform: scaleX(0.9);
-                }
-            }
             .quick-access-grid {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -767,18 +649,11 @@
                 </div>
 
                 <div class="section-panel glass-card dashboard-mini-panel">
-                            <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 mb-3">
+                            <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-2 mb-3">
                                 <div>
                                     <span class="dashboard-tag">Status Highlights</span>
                                     <h3 class="text-slate-900 text-base lg:text-lg font-black mt-1">Operational Signals</h3>
                                     <p class="text-slate-600 text-[11px] mt-1.5 max-w-3xl">A quick operational summary of participant and sponsorship records only.</p>
-                                </div>
-                                <div class="developer-credit self-start sm:self-center">
-                                    <span class="developer-credit-icon"><i class="bi bi-person-workspace"></i></span>
-                                    <span class="developer-credit-copy">
-                                        <span class="developer-credit-label">Developer</span>
-                                        <span class="developer-credit-name">idriss Ict Services</span>
-                                    </span>
                                 </div>
                         </div>
 

@@ -455,7 +455,7 @@
             .developer-credit-copy {
                 display: inline-flex;
                 align-items: center;
-                gap: 0.24rem;
+                gap: 0.32rem;
                 min-width: 0;
             }
             .developer-credit-label {
@@ -465,59 +465,55 @@
                 text-transform: uppercase;
                 color: #1e40af;
                 text-shadow: 0 0 16px rgba(125, 211, 252, 0.18);
-                animation: developer-credit-label-fade 4.8s ease-in-out infinite;
+                animation: developer-credit-fade 5.8s ease-in-out infinite;
                 white-space: nowrap;
             }
             .developer-credit-name {
-                display: inline-block;
-                max-width: 0;
+                position: relative;
+                display: inline-flex;
+                align-items: center;
                 overflow: hidden;
                 white-space: nowrap;
                 font-size: 0.58rem;
                 font-weight: 900;
                 letter-spacing: 0.08em;
                 color: #0f3fa8;
-                border-right: 1px solid rgba(37, 99, 235, 0.65);
                 text-shadow: 0 0 14px rgba(125, 211, 252, 0.16);
-                animation: developer-credit-type 4.8s steps(19, end) infinite, developer-credit-caret 0.7s step-end infinite;
+                padding-right: 0.1rem;
+                animation: developer-credit-fade 5.8s ease-in-out infinite;
             }
-            @keyframes developer-credit-label-fade {
-                0%, 12% {
+            .developer-credit-name::after {
+                content: '';
+                position: absolute;
+                inset: 0 auto 0 0;
+                width: 100%;
+                background: linear-gradient(90deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 255, 255, 0.18) 86%, transparent 100%);
+                transform: translateX(-112%);
+                animation: developer-credit-reveal 5.8s cubic-bezier(0.22, 1, 0.36, 1) infinite;
+            }
+            @keyframes developer-credit-fade {
+                0%, 16% {
                     opacity: 0;
                     transform: translateY(1px);
                 }
-                18%, 64% {
+                24%, 72% {
                     opacity: 1;
                     transform: translateY(0);
                 }
-                74%, 100% {
+                84%, 100% {
                     opacity: 0;
                     transform: translateY(-1px);
                 }
             }
-            @keyframes developer-credit-type {
+            @keyframes developer-credit-reveal {
                 0%, 20% {
-                    max-width: 0;
-                    opacity: 0;
+                    transform: translateX(-112%);
                 }
-                24% {
-                    opacity: 1;
-                }
-                24%, 70% {
-                    max-width: 15.5ch;
-                    opacity: 1;
+                30%, 68% {
+                    transform: translateX(104%);
                 }
                 84%, 100% {
-                    max-width: 0;
-                    opacity: 0;
-                }
-            }
-            @keyframes developer-credit-caret {
-                0%, 100% {
-                    border-right-color: rgba(37, 99, 235, 0.65);
-                }
-                50% {
-                    border-right-color: transparent;
+                    transform: translateX(112%);
                 }
             }
             @keyframes developer-credit-sheen {

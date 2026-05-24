@@ -1,5 +1,5 @@
 <x-app-layout>
-    <x-slot name="header">{{ ($isAdminMessenger ?? false) ? 'Chat With User' : 'Chat With Admin' }}</x-slot>
+    <x-slot name="header">{{ ($isOfficialAdminMessenger ?? false) ? 'Chat Management' : (($isAdminMessenger ?? false) ? 'Chat With User' : 'Chat With Admin') }}</x-slot>
 
     <div class="workspace-page">
         <div class="workspace-container space-y-6">
@@ -28,10 +28,12 @@
                     <div>
                         <p class="workspace-label">Chat Workflow</p>
                         <h1 class="notifications-title font-black text-slate-900 mt-3">
-                            {{ ($isAdminMessenger ?? false) ? 'Chat With User' : 'Chat With Admin' }}
+                            {{ ($isOfficialAdminMessenger ?? false) ? 'Chat Management' : (($isAdminMessenger ?? false) ? 'Chat With User' : 'Chat With Admin') }}
                         </h1>
                         <p class="text-slate-600 text-sm mt-3 max-w-2xl leading-7">
-                            @if($isAdminMessenger ?? false)
+                            @if($isOfficialAdminMessenger ?? false)
+                                Send messages to a specific admin, all admins, all users, or users from a selected cluster.
+                            @elseif($isAdminMessenger ?? false)
                                 Send messages to one user or all users you supervise, and review replies sent back to you.
                             @else
                                 Messages from your admins appear here, and you can reply directly to your admins only.
@@ -57,12 +59,14 @@
                 <div class="workspace-panel p-6">
                     <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-5">
                         <div>
-                            <p class="workspace-label">{{ ($isAdminMessenger ?? false) ? 'Admin Chat' : 'User Chat' }}</p>
+                            <p class="workspace-label">{{ ($isOfficialAdminMessenger ?? false) ? 'System Chat' : (($isAdminMessenger ?? false) ? 'Admin Chat' : 'User Chat') }}</p>
                             <h2 class="text-lg font-bold text-slate-900 mt-2">
-                                {{ ($isAdminMessenger ?? false) ? 'Send Message to User or All Users' : 'Send Message to Admin' }}
+                                {{ ($isOfficialAdminMessenger ?? false) ? 'Send Message to Admins or Users' : (($isAdminMessenger ?? false) ? 'Send Message to User or All Users' : 'Send Message to Admin') }}
                             </h2>
                             <p class="text-sm text-slate-500 mt-1">
-                                @if($isAdminMessenger ?? false)
+                                @if($isOfficialAdminMessenger ?? false)
+                                    Choose whether to message one admin, all admins, all users, or only users from one cluster.
+                                @elseif($isAdminMessenger ?? false)
                                     Send a message to one user or broadcast to all users you supervise.
                                 @else
                                     Send a message directly to your supervising admin.
@@ -72,10 +76,44 @@
                     </div>
 
                     <form method="POST" action="{{ route('notifications.send') }}" class="grid grid-cols-1 md:grid-cols-2 gap-4"
-                          x-data="{ targetMode: '{{ old('target_mode', 'single_user') }}' }">
+                          x-data="{ targetMode: '{{ old('target_mode', ($isOfficialAdminMessenger ?? false) ? 'single_admin' : 'single_user') }}' }">
                         @csrf
 
-                        @if($isAdminMessenger ?? false)
+                        @if($isOfficialAdminMessenger ?? false)
+                            <div>
+                                <label class="workspace-field-label">Send To</label>
+                                <select name="target_mode" class="workspace-select px-4 py-3" x-model="targetMode" required>
+                                    <option value="single_admin">Single Admin</option>
+                                    <option value="all_admins">All Admins</option>
+                                    <option value="all_users">All Users</option>
+                                    <option value="cluster_users">Users by Cluster</option>
+                                </select>
+                            </div>
+
+                            <div x-show="targetMode === 'single_admin'">
+                                <label class="workspace-field-label">Select Admin</label>
+                                <select name="target_user_id" class="workspace-select px-4 py-3" :required="targetMode === 'single_admin'">
+                                    <option value="">Select Admin</option>
+                                    @foreach(($officialAdminRecipients ?? []) as $officialAdminRecipient)
+                                        <option value="{{ $officialAdminRecipient->id }}" @selected((string) old('target_user_id') === (string) $officialAdminRecipient->id)>
+                                            {{ $officialAdminRecipient->name }} | {{ $officialAdminRecipient->display_title }}{{ $officialAdminRecipient->center_id ? ' | ' . $officialAdminRecipient->center_id : '' }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+
+                            <div x-show="targetMode === 'cluster_users'">
+                                <label class="workspace-field-label">Select Cluster</label>
+                                <select name="target_cluster_name" class="workspace-select px-4 py-3" :required="targetMode === 'cluster_users'">
+                                    <option value="">Select Cluster</option>
+                                    @foreach(($clusterRecipientOptions ?? []) as $clusterRecipientOption)
+                                        <option value="{{ $clusterRecipientOption }}" @selected((string) old('target_cluster_name') === (string) $clusterRecipientOption)>
+                                            {{ $clusterRecipientOption }}
+                                        </option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        @elseif($isAdminMessenger ?? false)
                             <div>
                                 <label class="workspace-field-label">Send To</label>
                                 <select name="target_mode" class="workspace-select px-4 py-3" x-model="targetMode" required>

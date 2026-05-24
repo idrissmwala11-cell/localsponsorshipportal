@@ -39,21 +39,32 @@ class CenterNotificationController extends Controller
             ->latest()
             ->paginate(12);
 
-        $managedUsers = $user->isAdmin()
+        $managedUsers = $user->role === User::ROLE_ADMIN
             ? $this->availableManagedUsersFor($user)
             : collect();
 
-        $adminRecipients = $user->isAdmin()
+        $adminRecipients = $user->role === User::ROLE_USER
             ? collect()
             : $this->availableAdminRecipientsFor($user);
+
+        $officialAdminRecipients = $user->isOfficialAdmin()
+            ? $this->availableOfficialAdminAdminRecipientsFor($user)
+            : collect();
+
+        $clusterRecipientOptions = $user->isOfficialAdmin()
+            ? $this->availableClusterRecipientOptions()
+            : collect();
 
         return view('notifications.index', [
             'notifications' => $notifications,
             'managedCenters' => $user->accessibleCenterIds(),
             'managedUsers' => $managedUsers,
             'adminRecipients' => $adminRecipients,
+            'officialAdminRecipients' => $officialAdminRecipients,
+            'clusterRecipientOptions' => $clusterRecipientOptions,
             'canSendNotifications' => true,
-            'isAdminMessenger' => $user->isAdmin(),
+            'isAdminMessenger' => $user->role === User::ROLE_ADMIN,
+            'isOfficialAdminMessenger' => $user->isOfficialAdmin(),
         ]);
     }
 
@@ -66,7 +77,7 @@ class CenterNotificationController extends Controller
                 return back()->with('error', 'Notifications table is not ready yet.');
             }
 
-            if ($user->isAdmin()) {
+            if ($user->role === User::ROLE_ADMIN) {
                 $data = $request->validate([
                     'target_mode' => ['required', 'in:single_user,all_managed_users'],
                     'target_user_id' => ['nullable', 'integer', 'exists:users,id'],
@@ -75,33 +86,23 @@ class CenterNotificationController extends Controller
                 ]);
 
                 if ($data['target_mode'] === 'all_managed_users') {
-                    foreach ($user->accessibleCenterIds() as $centerId) {
-                        CenterNotification::create([
-                            'center_id' => $centerId,
-                            'participant_id' => null,
-                            'sent_by_user_id' => $user->id,
-                            'target_user_id' => null,
-                            'type' => 'admin_broadcast',
-                            'title' => $data['title'],
-                            'message' => $data['message'],
-                            'event_key' => sprintf('broadcast-%s-%s-%s', $user->id, $centerId, Str::uuid()),
-                            'due_date' => null,
-                            'meta' => [
-                                'sender_name' => $user->name,
-                                'sender_role' => $user->display_title,
-                                'delivery_mode' => 'all_managed_users',
-                            ],
-                            'is_manual' => true,
-                            'sent_to_all_users' => true,
-                        ]);
-                    }
-                } else {
-                    $recipient = User::query()
-                        ->whereKey($data['target_user_id'])
-                        ->where('role', User::ROLE_USER)
-                        ->firstOrFail();
+                    $recipients = $this->availableManagedUsersFor($user);
 
-                    abort_unless($user->canAccessCenter($recipient->center_id), 403);
+                    abort_if($recipients->isEmpty(), 422, 'No supervised users are available for messaging.');
+
+                    $this->dispatchNotificationsToRecipients(
+                        $recipients,
+                        $user,
+                        'admin_broadcast',
+                        $data['title'],
+                        $data['message'],
+                        'all_managed_users'
+                    );
+                } else {
+                    $recipient = $this->availableManagedUsersFor($user)
+                        ->firstWhere('id', (int) $data['target_user_id']);
+
+                    abort_unless($recipient, 403, 'Unauthorized access.');
 
                     CenterNotification::create([
                         'center_id' => $recipient->center_id,
@@ -122,6 +123,59 @@ class CenterNotificationController extends Controller
                         'is_manual' => true,
                         'sent_to_all_users' => false,
                     ]);
+                }
+            } elseif ($user->isOfficialAdmin()) {
+                $data = $request->validate([
+                    'target_mode' => ['required', 'in:single_admin,all_admins,all_users,cluster_users'],
+                    'target_user_id' => ['nullable', 'integer', 'exists:users,id'],
+                    'target_cluster_name' => ['nullable', 'string', 'max:255'],
+                    'title' => ['required', 'string', 'max:255'],
+                    'message' => ['required', 'string', 'max:2000'],
+                ]);
+
+                if ($data['target_mode'] === 'single_admin') {
+                    $recipient = $this->availableOfficialAdminAdminRecipientsFor($user)
+                        ->firstWhere('id', (int) $data['target_user_id']);
+
+                    abort_unless($recipient, 403, 'Unauthorized access.');
+
+                    CenterNotification::create([
+                        'center_id' => $recipient->center_id,
+                        'participant_id' => null,
+                        'sent_by_user_id' => $user->id,
+                        'target_user_id' => $recipient->id,
+                        'type' => 'official_admin_message',
+                        'title' => $data['title'],
+                        'message' => $data['message'],
+                        'event_key' => sprintf('official-admin-%s-%s', $user->id, Str::uuid()),
+                        'due_date' => null,
+                        'meta' => [
+                            'sender_name' => $user->name,
+                            'sender_role' => $user->display_title,
+                            'recipient_name' => $recipient->name,
+                            'delivery_mode' => 'single_admin',
+                        ],
+                        'is_manual' => true,
+                        'sent_to_all_users' => false,
+                    ]);
+                } else {
+                    $recipients = match ($data['target_mode']) {
+                        'all_admins' => $this->availableOfficialAdminAdminRecipientsFor($user),
+                        'all_users' => $this->availableSystemUsersForOfficialAdmin(),
+                        'cluster_users' => $this->availableSystemUsersForOfficialAdmin($data['target_cluster_name'] ?? null),
+                        default => collect(),
+                    };
+
+                    abort_if($recipients->isEmpty(), 422, 'No recipients are available for the selected target.');
+
+                    $this->dispatchNotificationsToRecipients(
+                        $recipients,
+                        $user,
+                        'official_admin_broadcast',
+                        $data['title'],
+                        $data['message'],
+                        $data['target_mode']
+                    );
                 }
             } else {
                 $data = $request->validate([
@@ -282,5 +336,76 @@ class CenterNotificationController extends Controller
                 fn (User $recipient) => strtolower($recipient->name),
             ])
             ->values();
+    }
+
+    protected function availableOfficialAdminAdminRecipientsFor(User $user): Collection
+    {
+        return User::query()
+            ->where('role', User::ROLE_ADMIN)
+            ->whereNotNull('center_id')
+            ->where('center_id', '!=', '')
+            ->whereKeyNot($user->id)
+            ->orderBy('name')
+            ->get();
+    }
+
+    protected function availableSystemUsersForOfficialAdmin(?string $clusterName = null): Collection
+    {
+        return User::query()
+            ->where('role', User::ROLE_USER)
+            ->whereNotNull('center_id')
+            ->where('center_id', '!=', '')
+            ->when(filled($clusterName), fn ($query) => $query->where('cluster_name', $clusterName))
+            ->orderBy('cluster_name')
+            ->orderBy('center_id')
+            ->orderBy('name')
+            ->get();
+    }
+
+    protected function availableClusterRecipientOptions(): Collection
+    {
+        return User::query()
+            ->where('role', User::ROLE_USER)
+            ->whereNotNull('cluster_name')
+            ->where('cluster_name', '!=', '')
+            ->select('cluster_name')
+            ->distinct()
+            ->orderBy('cluster_name')
+            ->pluck('cluster_name')
+            ->values();
+    }
+
+    protected function dispatchNotificationsToRecipients(
+        Collection $recipients,
+        User $sender,
+        string $type,
+        string $title,
+        string $message,
+        string $deliveryMode
+    ): void {
+        $recipients
+            ->filter(fn (User $recipient) => filled($recipient->center_id))
+            ->unique('id')
+            ->each(function (User $recipient) use ($sender, $type, $title, $message, $deliveryMode) {
+                CenterNotification::create([
+                    'center_id' => $recipient->center_id,
+                    'participant_id' => null,
+                    'sent_by_user_id' => $sender->id,
+                    'target_user_id' => $recipient->id,
+                    'type' => $type,
+                    'title' => $title,
+                    'message' => $message,
+                    'event_key' => sprintf('%s-%s-%s', $deliveryMode, $sender->id, Str::uuid()),
+                    'due_date' => null,
+                    'meta' => [
+                        'sender_name' => $sender->name,
+                        'sender_role' => $sender->display_title,
+                        'recipient_name' => $recipient->name,
+                        'delivery_mode' => $deliveryMode,
+                    ],
+                    'is_manual' => true,
+                    'sent_to_all_users' => false,
+                ]);
+            });
     }
 }

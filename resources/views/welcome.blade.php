@@ -838,7 +838,7 @@
 
                     <div class="contact-item">
                         <i class="fas fa-envelope"></i>
-                        <span>info@localsponsorshipportal.org</span>
+                        <span>info@localsponsorshipportal.or.tz</span>
                     </div>
 
                     <div class="contact-item">

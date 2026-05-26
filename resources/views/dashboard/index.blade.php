@@ -410,6 +410,48 @@
             .dashboard-mini-panel .dashboard-table-wrap {
                 overflow-x: auto;
             }
+            .developer-badge {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.5rem;
+                width: fit-content;
+                max-width: 100%;
+                padding: 0.46rem 0.78rem;
+                border-radius: 999px;
+                color: #ffffff;
+                background: linear-gradient(135deg, #0f5eb8 0%, #2563eb 46%, #f59e0b 100%);
+                border: 1px solid rgba(255, 255, 255, 0.42);
+                box-shadow: 0 16px 34px -22px rgba(37, 99, 235, 0.58);
+                animation: developerZoom 2.2s ease-in-out infinite;
+                transform-origin: center;
+                white-space: nowrap;
+            }
+            .developer-badge i {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 1.45rem;
+                height: 1.45rem;
+                border-radius: 999px;
+                background: rgba(255, 255, 255, 0.18);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
+                font-size: 0.78rem;
+            }
+            .developer-badge span {
+                font-size: 0.7rem;
+                font-weight: 900;
+                letter-spacing: 0.035em;
+            }
+            @keyframes developerZoom {
+                0%, 100% {
+                    transform: scale(1);
+                    box-shadow: 0 16px 34px -22px rgba(37, 99, 235, 0.58);
+                }
+                50% {
+                    transform: scale(1.055);
+                    box-shadow: 0 22px 44px -22px rgba(245, 158, 11, 0.48);
+                }
+            }
             .quick-access-grid {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -486,6 +528,9 @@
                 }
                 .quick-access-grid {
                     grid-template-columns: 1fr;
+                }
+                .developer-badge {
+                    white-space: normal;
                 }
                 .church-gallery-tile,
                 .church-gallery-tile img {
@@ -654,6 +699,10 @@
                                     <span class="dashboard-tag">Status Highlights</span>
                                     <h3 class="text-slate-900 text-base lg:text-lg font-black mt-1">Operational Signals</h3>
                                     <p class="text-slate-600 text-[11px] mt-1.5 max-w-3xl">A quick operational summary of participant and sponsorship records only.</p>
+                                </div>
+                                <div class="developer-badge" aria-label="Developer Idriss Ict Services">
+                                    <i class="bi bi-code-slash"></i>
+                                    <span>Developer (Idriss Ict Services)</span>
                                 </div>
                         </div>
 

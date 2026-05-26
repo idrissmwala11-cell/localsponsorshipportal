@@ -415,11 +415,12 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                gap: 0.78rem;
-                min-width: min(27rem, 100%);
+                gap: 0.48rem;
+                width: fit-content;
+                min-width: 0;
                 max-width: 100%;
-                min-height: 3.15rem;
-                padding: 0.72rem 1.35rem;
+                min-height: 2.15rem;
+                padding: 0.42rem 0.76rem;
                 border-radius: 999px;
                 color: #ffffff;
                 background:
@@ -429,7 +430,7 @@
                 box-shadow:
                     0 20px 42px -20px rgba(15, 23, 42, 0.72),
                     inset 0 1px 0 rgba(255, 255, 255, 0.28);
-                animation: developerZoom 2.15s ease-in-out infinite;
+                animation: developerZoom 2.35s ease-in-out infinite;
                 transform-origin: center;
                 white-space: nowrap;
                 overflow: hidden;
@@ -451,21 +452,21 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                width: 2.15rem;
-                height: 2.15rem;
+                width: 1.42rem;
+                height: 1.42rem;
                 border-radius: 999px;
                 background: linear-gradient(135deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.12));
                 box-shadow:
                     inset 0 1px 0 rgba(255, 255, 255, 0.42),
                     0 8px 18px -12px rgba(0, 0, 0, 0.8);
-                font-size: 1.1rem;
+                font-size: 0.76rem;
             }
             .developer-badge span {
                 position: relative;
                 z-index: 1;
-                font-size: clamp(0.9rem, 1vw, 1.08rem);
+                font-size: 0.68rem;
                 font-weight: 900;
-                letter-spacing: 0.055em;
+                letter-spacing: 0.035em;
                 text-shadow: 0 1px 2px rgba(15, 23, 42, 0.42);
                 text-transform: uppercase;
             }
@@ -475,7 +476,7 @@
                     box-shadow: 0 20px 42px -20px rgba(15, 23, 42, 0.72);
                 }
                 50% {
-                    transform: scale(1.08);
+                    transform: scale(1.055);
                     box-shadow: 0 26px 54px -18px rgba(71, 85, 105, 0.82);
                 }
             }

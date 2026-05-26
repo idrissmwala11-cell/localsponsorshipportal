@@ -410,89 +410,6 @@
             .dashboard-mini-panel .dashboard-table-wrap {
                 overflow-x: auto;
             }
-            .developer-badge {
-                position: relative;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.48rem;
-                width: fit-content;
-                min-width: 0;
-                max-width: 100%;
-                min-height: 2.15rem;
-                padding: 0.42rem 0.76rem;
-                border-radius: 999px;
-                color: #ffffff;
-                background:
-                    linear-gradient(120deg, rgba(255, 255, 255, 0.18), transparent 28%, transparent 72%, rgba(255, 255, 255, 0.16)),
-                    linear-gradient(135deg, #020617 0%, #334155 45%, #94a3b8 100%);
-                border: 1px solid rgba(255, 255, 255, 0.58);
-                box-shadow:
-                    0 20px 42px -20px rgba(15, 23, 42, 0.72),
-                    inset 0 1px 0 rgba(255, 255, 255, 0.28);
-                animation: developerZoom 2.35s ease-in-out infinite;
-                transform-origin: center;
-                white-space: nowrap;
-                overflow: hidden;
-            }
-            .developer-badge::after {
-                content: '';
-                position: absolute;
-                top: -45%;
-                bottom: -45%;
-                left: -35%;
-                width: 30%;
-                background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.34), transparent);
-                transform: rotate(18deg);
-                animation: developerShine 3.2s ease-in-out infinite;
-            }
-            .developer-badge i {
-                position: relative;
-                z-index: 1;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                width: 1.42rem;
-                height: 1.42rem;
-                border-radius: 999px;
-                background: linear-gradient(135deg, rgba(255, 255, 255, 0.32), rgba(255, 255, 255, 0.12));
-                box-shadow:
-                    inset 0 1px 0 rgba(255, 255, 255, 0.42),
-                    0 8px 18px -12px rgba(0, 0, 0, 0.8);
-                font-size: 0.76rem;
-            }
-            .developer-badge span {
-                position: relative;
-                z-index: 1;
-                font-size: 0.68rem;
-                font-weight: 900;
-                letter-spacing: 0.035em;
-                text-shadow: 0 1px 2px rgba(15, 23, 42, 0.42);
-                text-transform: uppercase;
-            }
-            @keyframes developerZoom {
-                0%, 100% {
-                    transform: scale(1);
-                    box-shadow: 0 20px 42px -20px rgba(15, 23, 42, 0.72);
-                }
-                50% {
-                    transform: scale(1.055);
-                    box-shadow: 0 26px 54px -18px rgba(71, 85, 105, 0.82);
-                }
-            }
-            @keyframes developerShine {
-                0%, 42% {
-                    left: -35%;
-                    opacity: 0;
-                }
-                52% {
-                    opacity: 1;
-                }
-                78%, 100% {
-                    left: 110%;
-                    opacity: 0;
-                }
-            }
             .quick-access-grid {
                 display: grid;
                 grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -569,11 +486,6 @@
                 }
                 .quick-access-grid {
                     grid-template-columns: 1fr;
-                }
-                .developer-badge {
-                    width: 100%;
-                    min-width: 0;
-                    white-space: normal;
                 }
                 .church-gallery-tile,
                 .church-gallery-tile img {
@@ -742,10 +654,6 @@
                                     <span class="dashboard-tag">Status Highlights</span>
                                     <h3 class="text-slate-900 text-base lg:text-lg font-black mt-1">Operational Signals</h3>
                                     <p class="text-slate-600 text-[11px] mt-1.5 max-w-3xl">A quick operational summary of participant and sponsorship records only.</p>
-                                </div>
-                                <div class="developer-badge" aria-label="Developer Idriss Ict Services">
-                                    <i class="bi bi-code-slash"></i>
-                                    <span>Developer (Idriss Ict Services)</span>
                                 </div>
                         </div>
 

@@ -413,15 +413,15 @@
             .developer-badge {
                 display: inline-flex;
                 align-items: center;
-                gap: 0.5rem;
+                gap: 0.65rem;
                 width: fit-content;
                 max-width: 100%;
-                padding: 0.46rem 0.78rem;
+                padding: 0.62rem 1rem;
                 border-radius: 999px;
                 color: #ffffff;
-                background: linear-gradient(135deg, #0f5eb8 0%, #2563eb 46%, #f59e0b 100%);
-                border: 1px solid rgba(255, 255, 255, 0.42);
-                box-shadow: 0 16px 34px -22px rgba(37, 99, 235, 0.58);
+                background: linear-gradient(135deg, #020617 0%, #475569 48%, #cbd5e1 100%);
+                border: 1px solid rgba(255, 255, 255, 0.58);
+                box-shadow: 0 20px 42px -20px rgba(15, 23, 42, 0.72);
                 animation: developerZoom 2.2s ease-in-out infinite;
                 transform-origin: center;
                 white-space: nowrap;
@@ -430,26 +430,27 @@
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
-                width: 1.45rem;
-                height: 1.45rem;
+                width: 1.8rem;
+                height: 1.8rem;
                 border-radius: 999px;
-                background: rgba(255, 255, 255, 0.18);
-                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.32);
-                font-size: 0.78rem;
+                background: rgba(255, 255, 255, 0.22);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.42);
+                font-size: 0.95rem;
             }
             .developer-badge span {
-                font-size: 0.7rem;
+                font-size: 0.86rem;
                 font-weight: 900;
-                letter-spacing: 0.035em;
+                letter-spacing: 0.04em;
+                text-shadow: 0 1px 2px rgba(15, 23, 42, 0.42);
             }
             @keyframes developerZoom {
                 0%, 100% {
                     transform: scale(1);
-                    box-shadow: 0 16px 34px -22px rgba(37, 99, 235, 0.58);
+                    box-shadow: 0 20px 42px -20px rgba(15, 23, 42, 0.72);
                 }
                 50% {
-                    transform: scale(1.055);
-                    box-shadow: 0 22px 44px -22px rgba(245, 158, 11, 0.48);
+                    transform: scale(1.08);
+                    box-shadow: 0 26px 54px -18px rgba(71, 85, 105, 0.82);
                 }
             }
             .quick-access-grid {

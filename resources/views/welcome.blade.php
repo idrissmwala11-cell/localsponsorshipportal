@@ -29,10 +29,17 @@
         }
 
         body {
+            zoom: 0.8;
             font-family: 'Figtree', sans-serif;
             background: #f8fafc;
             color: #0f172a;
             line-height: 1.6;
+        }
+
+        @media print {
+            body {
+                zoom: 1;
+            }
         }
 
         .container {

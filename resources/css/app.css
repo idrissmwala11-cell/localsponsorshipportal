@@ -14,6 +14,7 @@
 
 /* ========== ROOT VARIABLES ========== */
 :root {
+    --portal-ui-scale: 0.8;
     --portal-bg-start: #f4f8ff;
     --portal-bg-mid: #eef4ff;
     --portal-bg-end: #ffffff;
@@ -40,11 +41,18 @@ html {
 }
 
 body {
+    zoom: var(--portal-ui-scale);
     font-family: 'Inter', 'Figtree', system-ui, -apple-system, sans-serif;
     background: var(--portal-bg-start);
     color: #0f172a;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+@media print {
+    body {
+        zoom: 1;
+    }
 }
 
 body::before {

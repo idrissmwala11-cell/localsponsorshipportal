@@ -22,7 +22,7 @@
                         <a href="#user-treatments" class="btn-ghost">Treatment</a>
                         <a href="#user-program-attendance" class="btn-ghost">Program Attendance</a>
                         <a href="#user-activity-attendance" class="btn-ghost">Activity Attendance</a>
-                        @if($managedUser->role === \App\Models\User::ROLE_USER)
+                        @if($managedUser->role === \App\Models\User::ROLE_USER && Route::has('admin.users.sms.create'))
                             <a href="{{ route('admin.users.sms.create', $managedUser) }}" class="btn-primary">Send SMS</a>
                         @endif
                         <a href="{{ route('admin.users.edit', $managedUser) }}" class="btn-primary">Edit User</a>

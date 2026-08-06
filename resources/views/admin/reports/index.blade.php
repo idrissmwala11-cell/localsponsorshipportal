@@ -4,7 +4,7 @@
     @once
         <style>
             .reports-shell {
-                max-width: 84rem;
+                max-width: 96rem;
                 margin: 0 auto;
             }
             .reports-card {
@@ -19,10 +19,43 @@
             }
             .reports-hero {
                 position: relative;
-                padding: 1.85rem 1.9rem 1.55rem;
+                padding: 1.65rem 1.75rem 1.35rem;
                 background:
                     radial-gradient(circle at top left, rgba(96, 165, 250, 0.16), transparent 19rem),
                     linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(243, 248, 255, 0.95));
+            }
+            .reports-hero-content {
+                position: relative;
+                z-index: 1;
+            }
+            .reports-stat-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 0.85rem;
+                margin-top: 1.25rem;
+            }
+            .reports-stat-card {
+                min-height: 5.3rem;
+                border-radius: 1rem;
+                border: 1px solid rgba(191, 219, 254, 0.9);
+                background: linear-gradient(180deg, rgba(255, 255, 255, 0.92), rgba(248, 250, 252, 0.9));
+                padding: 0.9rem 1rem;
+                box-shadow: 0 18px 30px -28px rgba(37, 99, 235, 0.28);
+            }
+            .reports-stat-card span {
+                color: #64748b;
+                font-size: 0.68rem;
+                font-weight: 800;
+                letter-spacing: 0.12em;
+                text-transform: uppercase;
+            }
+            .reports-stat-card strong {
+                display: block;
+                margin-top: 0.45rem;
+                color: #0f172a;
+                font-size: 1.45rem;
+                font-weight: 900;
+                line-height: 1;
             }
             .reports-hero::after {
                 content: '';
@@ -124,6 +157,18 @@
             .reports-table-wrap table tbody tr:hover {
                 background: rgba(239, 246, 255, 0.62);
             }
+            .reports-user-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.45rem;
+                color: #1d4ed8;
+                font-weight: 900;
+                text-decoration: none;
+            }
+            .reports-user-link:hover {
+                color: #0f5eb8;
+                text-decoration: underline;
+            }
             .reports-table-wrap table thead th {
                 position: sticky;
                 top: 0;
@@ -141,6 +186,9 @@
             }
             @media (max-width: 1280px) {
                 .reports-filter-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+                .reports-stat-grid {
                     grid-template-columns: repeat(2, minmax(0, 1fr));
                 }
             }
@@ -164,6 +212,9 @@
                     flex: 1 1 100%;
                     justify-content: center;
                 }
+                .reports-stat-grid {
+                    grid-template-columns: 1fr;
+                }
             }
         </style>
     @endonce
@@ -173,14 +224,35 @@
             <div class="reports-shell">
                 <div class="reports-card">
                     <div class="reports-hero">
-                        <span class="reports-kicker">Reporting Workspace</span>
-                        <h1 class="mt-4 text-3xl lg:text-4xl font-black text-slate-900">Church Reports</h1>
-                        <p class="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
-                            {{ auth()->user()->isOfficialAdmin()
-                                ? 'Run admin and user reports by report type, center ID, and time period, then print or export the results in a cleaner format.'
-                                : 'Run participant section reports by category, center ID, and time period, then print or export the results in a cleaner format.' }}
-                        </p>
-                        <p class="mt-3 text-sm font-medium text-blue-700">{{ $scopeLabel }}</p>
+                        <div class="reports-hero-content">
+                            <span class="reports-kicker">Reporting Workspace</span>
+                            <h1 class="mt-4 text-3xl lg:text-4xl font-black text-slate-900">Church Reports</h1>
+                            <p class="mt-3 max-w-4xl text-sm leading-7 text-slate-600">
+                                {{ auth()->user()->isOfficialAdmin()
+                                    ? 'Run admin and user reports by report type, center ID, and time period. Click a user name to open that user profile and center participant summary.'
+                                    : 'Run participant section reports by category, center ID, and time period. Records are shared by center ID for users in the same center.' }}
+                            </p>
+                            <p class="mt-3 text-sm font-medium text-blue-700">{{ $scopeLabel }}</p>
+
+                            <div class="reports-stat-grid">
+                                <div class="reports-stat-card">
+                                    <span>Participants</span>
+                                    <strong>{{ $participantsCount }}</strong>
+                                </div>
+                                <div class="reports-stat-card">
+                                    <span>Users</span>
+                                    <strong>{{ $usersCount }}</strong>
+                                </div>
+                                <div class="reports-stat-card">
+                                    <span>Sponsorships</span>
+                                    <strong>{{ $sponsorshipsCount }}</strong>
+                                </div>
+                                <div class="reports-stat-card">
+                                    <span>Notifications</span>
+                                    <strong>{{ $notificationsCount }}</strong>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="reports-filter-panel">
@@ -278,7 +350,16 @@
                                                             ? ' whitespace-nowrap font-mono text-xs'
                                                             : '';
                                                     @endphp
-                                                    <td class="{{ $cellClass . $extraClass }}">{{ filled($value) ? $value : 'N/A' }}</td>
+                                                    <td class="{{ $cellClass . $extraClass }}">
+                                                        @if(($reportModule['type'] ?? null) === 'accounts' && $column === 'name' && filled(data_get($reportRow, '_account_url')))
+                                                            <a href="{{ data_get($reportRow, '_account_url') }}" class="reports-user-link">
+                                                                <i class="bi bi-person-lines-fill"></i>
+                                                                <span>{{ filled($value) ? $value : 'N/A' }}</span>
+                                                            </a>
+                                                        @else
+                                                            {{ filled($value) ? $value : 'N/A' }}
+                                                        @endif
+                                                    </td>
                                                 @endforeach
                                             </tr>
                                         @empty

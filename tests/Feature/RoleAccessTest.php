@@ -10,6 +10,7 @@ use App\Http\Controllers\DashboardController;
 use App\Models\Center;
 use App\Models\OtpCode;
 use App\Models\Participant;
+use App\Models\SmsMessage;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Http\Request;
@@ -94,7 +95,7 @@ class RoleAccessTest extends TestCase
         $this->assertSame(1, $data['usersCount']);
     }
 
-    public function test_standard_user_cannot_view_another_users_participant_in_same_center(): void
+    public function test_standard_user_can_view_another_users_participant_in_same_center(): void
     {
         $owner = User::factory()->create([
             'center_id' => 'TZ0001',
@@ -117,13 +118,12 @@ class RoleAccessTest extends TestCase
             'participant_status' => 'Active',
         ]);
 
-        $this->withoutExceptionHandling();
-        $this->actingAs($viewer)->withSession(['otp_verified' => true]);
+        $response = $this->actingAs($viewer)
+            ->withSession(['otp_verified' => true])
+            ->get(route('participants.show', $participant));
 
-        $this->expectException(HttpException::class);
-        $this->expectExceptionMessage('Unauthorized access.');
-
-        $this->get(route('participants.show', $participant));
+        $response->assertOk();
+        $response->assertSee('Participant One');
     }
 
     public function test_standard_user_can_view_their_own_participant_even_if_account_center_is_missing(): void
@@ -229,6 +229,58 @@ class RoleAccessTest extends TestCase
         $this->assertSame('admin.users.show', $response->name());
         $this->assertSame($managedUser->id, $data['managedUser']->id);
         $this->assertSame($managedUser->email, $data['managedUser']->email);
+    }
+
+    public function test_admin_can_send_sms_to_user_in_their_scope(): void
+    {
+        $admin = User::factory()->admin('TZ0001')->create();
+        $managedUser = User::factory()->create([
+            'center_id' => 'TZ0001',
+            'phone_number' => '0712345678',
+        ]);
+
+        $response = $this
+            ->actingAs($admin)
+            ->withSession(['otp_verified' => true])
+            ->post(route('admin.users.sms.store', $managedUser), [
+                'message' => 'Please update your sponsorship records today.',
+            ]);
+
+        $response->assertRedirect(route('admin.sms.index', absolute: false));
+
+        $this->assertDatabaseHas('sms_messages', [
+            'sender_id' => $admin->id,
+            'recipient_user_id' => $managedUser->id,
+            'recipient_phone' => '+255712345678',
+            'body' => 'Please update your sponsorship records today.',
+            'provider' => 'log',
+            'status' => SmsMessage::STATUS_SENT,
+        ]);
+    }
+
+    public function test_admin_cannot_send_sms_to_user_outside_their_scope(): void
+    {
+        $admin = User::factory()->admin('TZ0001')->create();
+        $outsideUser = User::factory()->create([
+            'center_id' => 'TZ0002',
+            'phone_number' => '+255712345679',
+        ]);
+
+        $this->withoutExceptionHandling();
+        $this->actingAs($admin)->withSession(['otp_verified' => true]);
+
+        try {
+            $this->post(route('admin.users.sms.store', $outsideUser), [
+                'message' => 'This should not be allowed.',
+            ]);
+
+            $this->fail('Expected an HTTP exception for cross-center SMS access.');
+        } catch (HttpException $exception) {
+            $this->assertSame(403, $exception->getStatusCode());
+            $this->assertSame('This user is outside your access scope.', $exception->getMessage());
+        }
+
+        $this->assertDatabaseCount('sms_messages', 0);
     }
 
     public function test_standard_user_cannot_access_admin_routes(): void
@@ -374,14 +426,14 @@ class RoleAccessTest extends TestCase
         );
     }
 
-    public function test_reports_index_for_standard_user_is_limited_to_own_account_data(): void
+    public function test_reports_index_for_standard_user_uses_center_shared_participant_data(): void
     {
         $user = User::factory()->create([
             'center_id' => 'TZ0001',
             'cluster_name' => 'Cluster A',
         ]);
 
-        User::factory()->create([
+        $otherUser = User::factory()->create([
             'center_id' => 'TZ0001',
             'cluster_name' => 'Cluster A',
         ]);
@@ -397,6 +449,17 @@ class RoleAccessTest extends TestCase
             'participant_status' => 'Active',
         ]);
 
+        Participant::create([
+            'center_id' => 'TZ0001',
+            'created_by_user_id' => $otherUser->id,
+            'local_participant_number' => '002',
+            'local_participant_id' => 'TZ0001002',
+            'account_name' => 'Shared Center Project',
+            'preferred_name' => 'Shared Participant',
+            'gender' => 'Male',
+            'participant_status' => 'Active',
+        ]);
+
         $request = Request::create(route('reports.index', absolute: false), 'GET');
         $request->setUserResolver(fn () => $user);
 
@@ -405,8 +468,8 @@ class RoleAccessTest extends TestCase
 
         $this->assertSame('admin.reports.index', $response->name());
         $this->assertSame(1, $data['usersCount']);
-        $this->assertSame('User: only your own account data and the records you uploaded are visible here.', $data['scopeLabel']);
-        $this->assertSame(1, $data['participantsCount']);
+        $this->assertSame('User: center-shared records are visible for accounts using your center ID.', $data['scopeLabel']);
+        $this->assertSame(2, $data['participantsCount']);
     }
 
     public function test_admin_reports_can_be_filtered_to_one_center_id_only(): void

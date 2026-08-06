@@ -36,12 +36,6 @@ class ParticipantTreatment extends Model
 
     public function scopeVisibleToUser($query, User $user)
     {
-        $query->whereIn('center_id', $user->accessibleCenterIds());
-
-        if ($user->role === User::ROLE_USER) {
-            $query->where('created_by_user_id', $user->id);
-        }
-
-        return $query;
+        return $query->whereIn('center_id', $user->accessibleCenterIds());
     }
 }

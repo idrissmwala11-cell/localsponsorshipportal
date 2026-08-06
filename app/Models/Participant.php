@@ -217,13 +217,13 @@ class Participant extends Model
 
     public function scopeVisibleToUser($query, User $user)
     {
-        $query->forCenter($user->accessibleCenterIds());
+        $centerIds = $user->accessibleCenterIds();
 
-        if ($user->role === User::ROLE_USER) {
-            $query->where('created_by_user_id', $user->id);
+        if (!empty($centerIds)) {
+            return $query->forCenter($centerIds);
         }
 
-        return $query;
+        return $query->where('created_by_user_id', $user->id);
     }
 
     /*

@@ -94,6 +94,7 @@ class UserManagementController extends Controller
             $data = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'email', 'max:255', 'unique:users,email'],
+                'phone_number' => ['nullable', 'string', 'max:30', 'regex:/^\+?[0-9\s().-]{7,30}$/'],
                 'role' => ['required', Rule::in(array_keys(User::roles()))],
                 'project_name' => ['required', 'string', 'max:255'],
                 'password' => ['required', 'string', 'min:8', 'confirmed'],
@@ -107,6 +108,7 @@ class UserManagementController extends Controller
             $user = User::create([
                 'name' => $data['name'],
                 'email' => strtolower($data['email']),
+                'phone_number' => $this->normalizePhoneNumber($data['phone_number'] ?? null),
                 'role' => $data['role'],
                 'project_name' => trim((string) $data['project_name']),
                 'center_id' => $centerId,
@@ -162,14 +164,6 @@ class UserManagementController extends Controller
         $notificationsCount = Schema::hasTable('center_notifications')
             ? CenterNotification::query()->forCenter($scopeCenterIds)->manual()->count()
             : 0;
-
-        if ($user->role === User::ROLE_USER) {
-            $participantQuery->where('created_by_user_id', $user->id);
-            $sponsorshipQuery->where('created_by_user_id', $user->id);
-            $treatmentQuery->where('created_by_user_id', $user->id);
-            $attendanceQuery->where('created_by_user_id', $user->id);
-            $userScopeQuery->whereKey($user->id);
-        }
 
         $programAttendanceQuery = (clone $attendanceQuery)->where('attendance_type', 'program');
         $activityAttendanceQuery = (clone $attendanceQuery)->where('attendance_type', 'activity');
@@ -284,6 +278,7 @@ class UserManagementController extends Controller
             $data = $request->validate([
                 'name' => ['required', 'string', 'max:255'],
                 'email' => ['required', 'email', 'max:255', Rule::unique('users', 'email')->ignore($user->id)],
+                'phone_number' => ['nullable', 'string', 'max:30', 'regex:/^\+?[0-9\s().-]{7,30}$/'],
                 'role' => ['required', Rule::in(array_keys(User::roles()))],
                 'project_name' => ['required', 'string', 'max:255'],
                 'center_id' => ['nullable', 'string', 'max:255'],
@@ -296,6 +291,7 @@ class UserManagementController extends Controller
             $user->update([
                 'name' => $data['name'],
                 'email' => strtolower($data['email']),
+                'phone_number' => $this->normalizePhoneNumber($data['phone_number'] ?? null),
                 'role' => $data['role'],
                 'project_name' => trim((string) $data['project_name']),
                 'center_id' => $centerId,
@@ -404,6 +400,33 @@ class UserManagementController extends Controller
         $user->managedCenters()->sync($centerIds);
     }
 
+    protected function normalizePhoneNumber(?string $phoneNumber): ?string
+    {
+        $phoneNumber = trim((string) $phoneNumber);
+
+        if ($phoneNumber === '') {
+            return null;
+        }
+
+        $digits = preg_replace('/\D+/', '', $phoneNumber) ?? '';
+
+        if ($digits === '') {
+            return null;
+        }
+
+        $countryCode = preg_replace('/\D+/', '', (string) config('services.sms.default_country_code', '255')) ?: '255';
+
+        if (str_starts_with($digits, '0')) {
+            return '+' . $countryCode . substr($digits, 1);
+        }
+
+        if (str_starts_with($digits, $countryCode) || str_starts_with($phoneNumber, '+')) {
+            return '+' . $digits;
+        }
+
+        return '+' . $countryCode . $digits;
+    }
+
     protected function managedScopeCenterIds(User $managedUser, User $viewer): array
     {
         if ($managedUser->isOfficialAdmin()) {
@@ -435,9 +458,6 @@ class UserManagementController extends Controller
             abort(403, 'This participant is outside this user profile scope.');
         }
 
-        if ($managedUser->role === User::ROLE_USER && (int) $participant->created_by_user_id !== (int) $managedUser->id) {
-            abort(403, 'This participant was not created by this user.');
-        }
     }
 
     protected function participantExportRows(Participant $participant): array

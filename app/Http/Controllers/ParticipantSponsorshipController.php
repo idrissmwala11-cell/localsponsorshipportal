@@ -100,7 +100,7 @@ class ParticipantSponsorshipController extends Controller
     {
         $sponsorship = ParticipantSponsorship::with('participant')->findOrFail($id);
 
-        if (!Auth::user()->canAccessCenter(optional($sponsorship->participant)->center_id) || (Auth::user()->role === \App\Models\User::ROLE_USER && $sponsorship->created_by_user_id !== Auth::id())) {
+        if (!Auth::user()->canAccessCenter(optional($sponsorship->participant)->center_id)) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -117,7 +117,7 @@ class ParticipantSponsorshipController extends Controller
     {
         $sponsorship = ParticipantSponsorship::with('participant')->findOrFail($id);
 
-        if (!Auth::user()->canAccessCenter(optional($sponsorship->participant)->center_id) || (Auth::user()->role === \App\Models\User::ROLE_USER && $sponsorship->created_by_user_id !== Auth::id())) {
+        if (!Auth::user()->canAccessCenter(optional($sponsorship->participant)->center_id)) {
             abort(403, 'Unauthorized access.');
         }
 
@@ -168,7 +168,7 @@ class ParticipantSponsorshipController extends Controller
     {
         $sponsorship = ParticipantSponsorship::with('participant')->findOrFail($id);
 
-        if (!Auth::user()->canAccessCenter(optional($sponsorship->participant)->center_id) || (Auth::user()->role === \App\Models\User::ROLE_USER && $sponsorship->created_by_user_id !== Auth::id())) {
+        if (!Auth::user()->canAccessCenter(optional($sponsorship->participant)->center_id)) {
             abort(403, 'Unauthorized access.');
         }
 

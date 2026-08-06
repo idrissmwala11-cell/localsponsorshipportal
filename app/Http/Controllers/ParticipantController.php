@@ -25,11 +25,8 @@ class ParticipantController extends Controller
             return true;
         }
 
-        if ($user->role === \App\Models\User::ROLE_USER) {
-            return (int) $participant->created_by_user_id === (int) Auth::id();
-        }
-
-        return $user->canAccessCenter($participant->center_id);
+        return $user->canAccessCenter($participant->center_id)
+            || (int) $participant->created_by_user_id === (int) Auth::id();
     }
 
     public function search(Request $request)

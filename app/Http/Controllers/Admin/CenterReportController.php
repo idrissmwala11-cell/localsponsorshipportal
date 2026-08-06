@@ -60,7 +60,7 @@ class CenterReportController extends Controller
                 ? 'Official Admin: report only on admins and users across all centers.'
                 : ($user->isAdmin()
                     ? 'Admin: data for centers and users under your supervision.'
-                    : 'User: only your own account data and the records you uploaded are visible here.'),
+                    : 'User: center-shared records are visible for accounts using your center ID.'),
             'participantsCount' => (clone $participants)->count(),
             'activeParticipantsCount' => (clone $participants)
                 ->where(function ($query) {
@@ -169,7 +169,7 @@ class CenterReportController extends Controller
                 ? 'Official Admin: report only on admins and users across all centers.'
                 : ($user->isAdmin()
                     ? 'Admin: data for centers and users under your supervision.'
-                    : 'User: only your own account data and the records you uploaded are visible here.'),
+                    : 'User: center-shared records are visible for accounts using your center ID.'),
             'reportTitle' => $moduleDefinition['label'],
             'reportColumns' => $this->columnsWithRecordedAt($moduleDefinition),
             'reportRows' => $rows,
@@ -240,7 +240,7 @@ class CenterReportController extends Controller
 
     protected function exportUsers($handle, array $centerIds, User $currentUser): void
     {
-        $this->writeCsvRow($handle, ['Name', 'Email', 'Role', 'Center ID', 'Created At'], true);
+        $this->writeCsvRow($handle, ['Name', 'Email', 'Role', 'Center ID', 'Participants', 'Created At'], true);
 
         $query = $currentUser->role === User::ROLE_USER
             ? User::query()->whereKey($currentUser->id)
@@ -254,6 +254,7 @@ class CenterReportController extends Controller
                     $user->email,
                     $user->role,
                     $user->center_id,
+                    $user->center_id ? Participant::query()->where('center_id', $user->center_id)->count() : 0,
                     optional($user->created_at)->format('Y-m-d H:i:s'),
                 ]);
             });
@@ -519,6 +520,7 @@ class CenterReportController extends Controller
                     'project_name' => 'Project Name',
                     'cluster_name' => 'Cluster Name',
                     'center_id' => 'Center ID',
+                    'participant_count' => 'Participants',
                     'approval_status' => 'Approval Status',
                 ],
             ],
@@ -609,7 +611,10 @@ class CenterReportController extends Controller
             ->latest();
 
         $paginator = $query->paginate(25)->withQueryString()->through(function (User $account) use ($moduleDefinition) {
-            return $this->mapAccountReportRow($account, $moduleDefinition);
+            $row = $this->mapAccountReportRow($account, $moduleDefinition);
+            $row['_account_url'] = route('admin.users.show', $account);
+
+            return $row;
         });
 
         return [
@@ -643,7 +648,10 @@ class CenterReportController extends Controller
             ->latest()
             ->each(function (User $account) use ($handle, $moduleDefinition) {
                 $row = $this->mapAccountReportRow($account, $moduleDefinition);
-                $this->writeCsvRow($handle, array_values($row));
+                $this->writeCsvRow($handle, array_map(
+                    fn ($column) => $row[$column] ?? 'N/A',
+                    array_keys($this->columnsWithRecordedAt($moduleDefinition))
+                ));
             });
     }
 
@@ -819,6 +827,9 @@ class CenterReportController extends Controller
             'project_name' => $account->project_display_name ?: 'N/A',
             'cluster_name' => $account->cluster_name ?: 'N/A',
             'center_id' => $account->center_id ?: 'N/A',
+            'participant_count' => $account->center_id
+                ? (string) Participant::query()->where('center_id', $account->center_id)->count()
+                : '0',
             'approval_status' => $account->isApproved() ? 'Approved' : 'Pending',
             'managed_scope' => $managedScope,
             'recorded_at' => optional($account->created_at)->format('d M Y H:i') ?: 'N/A',

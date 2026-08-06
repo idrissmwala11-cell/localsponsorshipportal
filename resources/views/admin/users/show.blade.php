@@ -13,7 +13,7 @@
                         <p class="workspace-label">User Profile</p>
                         <h1 class="text-3xl lg:text-5xl font-black text-slate-900 mt-3">{{ $managedUser->name }}</h1>
                         <p class="text-slate-500 text-sm mt-3 max-w-3xl">
-                            Review account details, scope, uploaded records, and supervision summary for this account.
+                            Review account details, center scope, shared records, and supervision summary for this account.
                         </p>
                     </div>
                     <div class="flex flex-wrap gap-3">
@@ -22,6 +22,9 @@
                         <a href="#user-treatments" class="btn-ghost">Treatment</a>
                         <a href="#user-program-attendance" class="btn-ghost">Program Attendance</a>
                         <a href="#user-activity-attendance" class="btn-ghost">Activity Attendance</a>
+                        @if($managedUser->role === \App\Models\User::ROLE_USER)
+                            <a href="{{ route('admin.users.sms.create', $managedUser) }}" class="btn-primary">Send SMS</a>
+                        @endif
                         <a href="{{ route('admin.users.edit', $managedUser) }}" class="btn-primary">Edit User</a>
                         <a href="{{ route('admin.users.index') }}" class="btn-ghost">Back To Users</a>
                     </div>
@@ -42,7 +45,7 @@
                 <a href="#user-participants" class="workspace-stat p-5 block hover:border-blue-200 transition">
                     <p class="workspace-label">Participants</p>
                     <h3 class="text-3xl font-black text-slate-900 mt-3">{{ $participantsCount }}</h3>
-                    <p class="text-sm text-slate-500 mt-2">Click to view participant records added by this user.</p>
+                    <p class="text-sm text-slate-500 mt-2">Click to view participant records available in this center scope.</p>
                 </a>
                 <div class="workspace-stat p-5">
                     <p class="workspace-label">Uploads</p>
@@ -70,6 +73,7 @@
                     <h2 class="text-xl font-bold text-slate-900 mt-2">Profile Summary</h2>
                     <div class="mt-5 space-y-3 text-sm text-slate-600">
                         <p><span class="font-semibold text-slate-900">Email:</span> {{ $managedUser->email }}</p>
+                        <p><span class="font-semibold text-slate-900">Phone:</span> {{ $managedUser->phone_number ?: 'N/A' }}</p>
                         <p><span class="font-semibold text-slate-900">Project:</span> {{ $managedUser->project_display_name }}</p>
                         <p><span class="font-semibold text-slate-900">Primary Center:</span> {{ $managedUser->center_id ?: 'N/A' }}</p>
                         <p><span class="font-semibold text-slate-900">Managed Centers:</span>
@@ -160,10 +164,10 @@
                     <div>
                         <p class="workspace-label">Participants</p>
                         <h2 class="text-xl font-bold text-slate-900 mt-2">
-                            {{ $managedUser->role === \App\Models\User::ROLE_USER ? 'Participants Added By This User' : 'Participants In This User Scope' }}
+                            Participants In This User Scope
                         </h2>
                         <p class="text-sm text-slate-500 mt-1">
-                            View every participant record linked to {{ $managedUser->name }} and export one participant at a time.
+                            View every participant record available to {{ $managedUser->name }} through the same center ID and export one participant at a time.
                         </p>
                     </div>
                     <div class="text-sm font-semibold text-slate-500">
@@ -204,7 +208,7 @@
                             @empty
                                 <tr>
                                     <td colspan="6" class="py-10 text-center text-slate-500">
-                                        No participants have been added by this user yet.
+                                        No participants are available in this user scope yet.
                                     </td>
                                 </tr>
                             @endforelse
@@ -223,8 +227,8 @@
                 <div class="px-6 py-5 border-b border-slate-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
                     <div>
                         <p class="workspace-label">Sponsorships</p>
-                        <h2 class="text-xl font-bold text-slate-900 mt-2">Sponsorship Data Added By This User</h2>
-                        <p class="text-sm text-slate-500 mt-1">All sponsorship records connected to this account.</p>
+                        <h2 class="text-xl font-bold text-slate-900 mt-2">Sponsorship Data In This User Scope</h2>
+                        <p class="text-sm text-slate-500 mt-1">All sponsorship records connected to this account's center scope.</p>
                     </div>
                     <div class="text-sm font-semibold text-slate-500">Total: {{ $sponsorshipsCount }}</div>
                 </div>
@@ -277,8 +281,8 @@
                 <div class="px-6 py-5 border-b border-slate-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
                     <div>
                         <p class="workspace-label">Treatment</p>
-                        <h2 class="text-xl font-bold text-slate-900 mt-2">Treatment Data Added By This User</h2>
-                        <p class="text-sm text-slate-500 mt-1">Health and treatment records entered under this account.</p>
+                        <h2 class="text-xl font-bold text-slate-900 mt-2">Treatment Data In This User Scope</h2>
+                        <p class="text-sm text-slate-500 mt-1">Health and treatment records available in this account's center scope.</p>
                     </div>
                     <div class="text-sm font-semibold text-slate-500">Total: {{ $treatmentsCount }}</div>
                 </div>
@@ -327,8 +331,8 @@
                 <div class="px-6 py-5 border-b border-slate-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
                     <div>
                         <p class="workspace-label">Program Attendance</p>
-                        <h2 class="text-xl font-bold text-slate-900 mt-2">Program Attendance Added By This User</h2>
-                        <p class="text-sm text-slate-500 mt-1">Program attendance sessions recorded under this account.</p>
+                        <h2 class="text-xl font-bold text-slate-900 mt-2">Program Attendance In This User Scope</h2>
+                        <p class="text-sm text-slate-500 mt-1">Program attendance sessions available in this account's center scope.</p>
                     </div>
                     <div class="text-sm font-semibold text-slate-500">Total: {{ $programAttendanceCount }}</div>
                 </div>
@@ -373,8 +377,8 @@
                 <div class="px-6 py-5 border-b border-slate-200 flex flex-col lg:flex-row lg:items-center lg:justify-between gap-3">
                     <div>
                         <p class="workspace-label">Activity Attendance</p>
-                        <h2 class="text-xl font-bold text-slate-900 mt-2">Activity Attendance Added By This User</h2>
-                        <p class="text-sm text-slate-500 mt-1">Activity records and attendance sessions entered under this account.</p>
+                        <h2 class="text-xl font-bold text-slate-900 mt-2">Activity Attendance In This User Scope</h2>
+                        <p class="text-sm text-slate-500 mt-1">Activity records and attendance sessions available in this account's center scope.</p>
                     </div>
                     <div class="text-sm font-semibold text-slate-500">Total: {{ $activityAttendanceCount }}</div>
                 </div>

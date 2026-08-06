@@ -91,43 +91,103 @@
             }
             .reports-filter-grid {
                 display: grid;
-                grid-template-columns: minmax(0, 1.3fr) minmax(0, 0.8fr) minmax(0, 0.9fr) auto auto;
-                gap: 1.05rem;
+                grid-template-columns: minmax(0, 1.15fr) minmax(0, 0.75fr) minmax(0, 0.75fr) auto;
+                gap: 0.9rem;
                 align-items: end;
             }
             .reports-filter-panel {
-                padding: 1.55rem 1.65rem;
+                padding: 1.25rem 1.35rem;
                 border-top: 1px solid rgba(226, 232, 240, 0.8);
                 border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-                background: linear-gradient(180deg, rgba(255, 255, 255, 0.78), rgba(248, 250, 252, 0.72));
+                background:
+                    radial-gradient(circle at top right, rgba(219, 234, 254, 0.5), transparent 20rem),
+                    linear-gradient(180deg, rgba(255, 255, 255, 0.88), rgba(248, 250, 252, 0.8));
+            }
+            .reports-filter-card {
+                border-radius: 1.25rem;
+                border: 1px solid rgba(219, 234, 254, 0.95);
+                background: rgba(255, 255, 255, 0.76);
+                padding: 0.9rem;
+                box-shadow: 0 18px 34px -32px rgba(15, 23, 42, 0.22);
+            }
+            .reports-filter-field {
+                min-width: 0;
+            }
+            .reports-filter-label {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.42rem;
+                margin-bottom: 0.45rem;
+                color: #334155;
+                font-size: 0.72rem;
+                font-weight: 900;
+                letter-spacing: 0.08em;
+                text-transform: uppercase;
+            }
+            .reports-filter-label i {
+                color: #2563eb;
+                font-size: 0.85rem;
+            }
+            .reports-filter-card .workspace-select {
+                min-height: 3.2rem;
+                border-radius: 1rem;
+                border-color: rgba(203, 213, 225, 0.86);
+                background-color: rgba(255, 255, 255, 0.96);
+                box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.78);
+            }
+            .reports-filter-actions {
+                display: flex;
+                align-items: center;
+                gap: 0.65rem;
+            }
+            .reports-filter-actions .btn-primary,
+            .reports-filter-actions .btn-ghost {
+                min-height: 3.2rem;
+                white-space: nowrap;
             }
             .reports-summary {
                 display: flex;
                 flex-wrap: wrap;
-                gap: 0.85rem;
-                margin-top: 1.15rem;
+                gap: 0.65rem;
+                margin-top: 0.9rem;
             }
             .reports-pill {
                 display: inline-flex;
                 align-items: center;
-                gap: 0.4rem;
-                padding: 0.62rem 0.96rem;
+                gap: 0.5rem;
+                padding: 0.48rem 0.78rem;
                 border-radius: 999px;
                 background: linear-gradient(180deg, #ffffff, #f8fbff);
                 border: 1px solid #dbeafe;
                 color: #334155;
-                font-size: 0.8rem;
-                font-weight: 700;
+                font-size: 0.72rem;
+                font-weight: 800;
                 box-shadow: 0 12px 24px -22px rgba(37, 99, 235, 0.28);
+            }
+            .reports-pill i {
+                color: #2563eb;
             }
             .reports-pill strong {
                 color: #0f172a;
             }
             .reports-body {
-                padding: 1.7rem;
+                padding: 1.35rem;
+            }
+            .reports-output-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                border-radius: 1.35rem;
+                border: 1px solid rgba(219, 234, 254, 0.95);
+                background:
+                    linear-gradient(135deg, rgba(255, 255, 255, 0.96), rgba(239, 246, 255, 0.86)),
+                    radial-gradient(circle at top right, rgba(147, 197, 253, 0.18), transparent 18rem);
+                padding: 1.05rem 1.1rem;
+                box-shadow: 0 18px 34px -34px rgba(37, 99, 235, 0.24);
             }
             .reports-section-title {
-                font-size: clamp(1.55rem, 2vw, 2rem);
+                font-size: clamp(1.35rem, 1.6vw, 1.75rem);
                 line-height: 1.1;
                 color: #0f172a;
             }
@@ -208,6 +268,14 @@
                 .reports-actions {
                     justify-content: stretch;
                 }
+                .reports-filter-actions {
+                    flex-direction: column;
+                    align-items: stretch;
+                }
+                .reports-output-header {
+                    align-items: stretch;
+                    flex-direction: column;
+                }
                 .reports-actions > * {
                     flex: 1 1 100%;
                     justify-content: center;
@@ -256,9 +324,9 @@
                     </div>
 
                     <div class="reports-filter-panel">
-                        <form method="GET" action="{{ route('reports.index') }}" class="reports-filter-grid">
-                            <div>
-                                <label class="workspace-field-label">Select Category</label>
+                        <form method="GET" action="{{ route('reports.index') }}" class="reports-filter-card reports-filter-grid">
+                            <div class="reports-filter-field">
+                                <label class="reports-filter-label"><i class="bi bi-ui-checks-grid"></i> Select Category</label>
                                 <select name="module" class="workspace-select px-4 py-3">
                                     @foreach($moduleDefinitions as $moduleKey => $definition)
                                         <option value="{{ $moduleKey }}" @selected($selectedModule === $moduleKey)>{{ $definition['label'] }}</option>
@@ -266,8 +334,8 @@
                                 </select>
                             </div>
 
-                            <div>
-                                <label class="workspace-field-label">Center ID</label>
+                            <div class="reports-filter-field">
+                                <label class="reports-filter-label"><i class="bi bi-building"></i> Center ID</label>
                                 <select name="center_id" class="workspace-select px-4 py-3">
                                     <option value="all" @selected($selectedCenterId === 'all')>{{ auth()->user()->isOfficialAdmin() ? 'All Centers' : 'All Managed Centers' }}</option>
                                     @foreach($centerOptions as $centerOption)
@@ -276,8 +344,8 @@
                                 </select>
                             </div>
 
-                            <div>
-                                <label class="workspace-field-label">Report Period</label>
+                            <div class="reports-filter-field">
+                                <label class="reports-filter-label"><i class="bi bi-calendar3"></i> Report Period</label>
                                 <select name="period" class="workspace-select px-4 py-3">
                                     @foreach($periodOptions as $periodKey => $periodLabel)
                                         <option value="{{ $periodKey }}" @selected($selectedPeriod === $periodKey)>{{ $periodLabel }}</option>
@@ -285,32 +353,42 @@
                                 </select>
                             </div>
 
-                            <button type="submit" class="btn-primary justify-center px-6">Run Report</button>
-                            <a
-                                href="{{ route('reports.print', ['module' => $selectedModule, 'period' => $selectedPeriod, 'center_id' => $selectedCenterId]) }}"
-                                target="_blank"
-                                class="btn-ghost justify-center px-6">
-                                Print Report
-                            </a>
+                            <div class="reports-filter-actions">
+                                <button type="submit" class="btn-primary justify-center px-6">
+                                    <i class="bi bi-play-circle-fill"></i>
+                                    Run
+                                </button>
+                                <a
+                                    href="{{ route('reports.print', ['module' => $selectedModule, 'period' => $selectedPeriod, 'center_id' => $selectedCenterId]) }}"
+                                    target="_blank"
+                                    class="btn-ghost justify-center px-5">
+                                    <i class="bi bi-printer-fill"></i>
+                                    Print
+                                </a>
+                            </div>
                         </form>
 
                         <div class="reports-summary">
-                            <span class="reports-pill">Center ID: <strong>{{ $centerId }}</strong></span>
-                            <span class="reports-pill">Period: <strong>{{ $periodOptions[$selectedPeriod] }}</strong></span>
-                            <span class="reports-pill">Total Records: <strong>{{ $reportTotal }}</strong></span>
-                            <span class="reports-pill">Category: <strong>{{ $reportModule['label'] }}</strong></span>
+                            <span class="reports-pill"><i class="bi bi-geo-alt-fill"></i> Center ID: <strong>{{ $centerId }}</strong></span>
+                            <span class="reports-pill"><i class="bi bi-clock-fill"></i> Period: <strong>{{ $periodOptions[$selectedPeriod] }}</strong></span>
+                            <span class="reports-pill"><i class="bi bi-database-fill"></i> Total Records: <strong>{{ $reportTotal }}</strong></span>
+                            <span class="reports-pill"><i class="bi bi-folder-fill"></i> Category: <strong>{{ $reportModule['label'] }}</strong></span>
                         </div>
                     </div>
 
                     <div class="reports-body space-y-5">
-                        <div class="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+                        <div class="reports-output-header">
                             <div>
+                                <p class="workspace-label">Selected Output</p>
                                 <h2 class="reports-section-title font-black">{{ $reportModule['label'] }}</h2>
-                                <p class="mt-2 text-sm text-slate-500">Output for the selected report category.</p>
+                                <p class="mt-1.5 text-sm text-slate-500">Output for the selected report category.</p>
                             </div>
 
                             <div class="reports-actions">
-                                <a href="{{ route('reports.export', ['type' => 'report', 'module' => $selectedModule, 'period' => $selectedPeriod, 'center_id' => $selectedCenterId]) }}" class="btn-primary">Export This Report Excel</a>
+                                <a href="{{ route('reports.export', ['type' => 'report', 'module' => $selectedModule, 'period' => $selectedPeriod, 'center_id' => $selectedCenterId]) }}" class="btn-primary">
+                                    <i class="bi bi-file-earmark-spreadsheet-fill"></i>
+                                    Export Excel
+                                </a>
                                 @unless(auth()->user()->isOfficialAdmin())
                                     <a href="{{ route('reports.export', ['type' => 'all-items', 'center_id' => $selectedCenterId]) }}" class="btn-ghost">Export All Items Excel</a>
                                     <a href="{{ route('reports.export', ['type' => 'sponsorships', 'center_id' => $selectedCenterId]) }}" class="btn-ghost">Export Sponsorships Excel</a>
